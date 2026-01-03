@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Cities | Trip Planner</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(to right, #1a2980, #26d0ce);
+            color: white;
+            padding: 30px 0;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .trip-counter {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Search and Filters Section */
+        .search-section {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .search-box {
+            margin-bottom: 25px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e1e5ee;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #26d0ce;
+            box-shadow: 0 0 0 3px rgba(38, 208, 206, 0.2);
+        }
+
+        .filter-section h3 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: #1a2980;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+
+        .filter-group {
+            margin-bottom: 20px;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .filter-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5ee;
+            border-radius: 10px;
+            font-size: 1rem;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .cost-filter, .popularity-filter {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .cost-option, .popularity-option {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .cost-option:hover, .popularity-option:hover {
+            background-color: #f5f7fa;
+        }
+
+        .cost-option input, .popularity-option input {
+            margin-right: 10px;
+            accent-color: #26d0ce;
+        }
+
+        .reset-filters {
+            background-color: #f8f9fa;
+            color: #555;
+            border: 2px solid #e1e5ee;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .reset-filters:hover {
+            background-color: #e9ecef;
+        }
+
+        /* Results Section */
+        .results-section {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 15px;
+        }
+
+        .results-count {
+            font-size: 1.2rem;
+            color: #555;
+        }
+
+        .sort-options select {
+            padding: 10px 15px;
+            border: 2px solid #e1e5ee;
+            border-radius: 10px;
+            font-size: 1rem;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .cities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .cities-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .city-card {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            background-color: white;
+            border: 1px solid #f0f0f0;
+        }
+
+        .city-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .city-image {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .city-info {
+            padding: 20px;
+        }
+
+        .city-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .city-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a2980;
+        }
+
+        .city-country {
+            color: #26d0ce;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .city-stats {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 12px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            min-width: 80px;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #777;
+            margin-bottom: 3px;
+        }
+
+        .stat-value {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+        .cost-high { color: #e74c3c; }
+        .cost-medium { color: #f39c12; }
+        .cost-low { color: #27ae60; }
+
+        .popularity-high { color: #e74c3c; }
+        .popularity-medium { color: #f39c12; }
+        .popularity-low { color: #27ae60; }
+
+        .city-description {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .add-to-trip-btn {
+            background: linear-gradient(to right, #1a2980, #26d0ce);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .add-to-trip-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(26, 41, 128, 0.3);
+        }
+
+        .add-to-trip-btn.added {
+            background: #27ae60;
+        }
+
+        .add-to-trip-btn.added:hover {
+            background: #219653;
+        }
+
+        .added-text {
+            color: #27ae60;
+            font-weight: 600;
+            text-align: center;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* No results message */
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-size: 1.2rem;
+            grid-column: 1 / -1;
+        }
+
+        /* Animation for added cities */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse {
+            animation: pulse 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div>
+                    <h1>Explore Cities</h1>
+                    <p class="subtitle">Discover and add beautiful destinations to your trip itinerary</p>
+                </div>
+                <div class="trip-counter">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <span id="trip-count">0</span> Cities Added to Trip
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="main-content">
+            <!-- Search and Filters Section -->
+            <aside class="search-section">
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="Search for a city...">
+                </div>
+
+                <div class="filter-section">
+                    <h3>Filter Cities</h3>
+
+                    <div class="filter-group">
+                        <label for="country-filter">Country/Region</label>
+                        <select id="country-filter">
+                            <option value="all">All Countries</option>
+                            <option value="italy">Italy</option>
+                            <option value="france">France</option>
+                            <option value="spain">Spain</option>
+                            <option value="japan">Japan</option>
+                            <option value="usa">United States</option>
+                            <option value="thailand">Thailand</option>
+                            <option value="greece">Greece</option>
+                            <option value="australia">Australia</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label>Cost Index</label>
+                        <div class="cost-filter">
+                            <label class="cost-option">
+                                <input type="checkbox" name="cost" value="low"> Low Cost
+                            </label>
+                            <label class="cost-option">
+                                <input type="checkbox" name="cost" value="medium"> Medium Cost
+                            </label>
+                            <label class="cost-option">
+                                <input type="checkbox" name="cost" value="high"> High Cost
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <label>Popularity</label>
+                        <div class="popularity-filter">
+                            <label class="popularity-option">
+                                <input type="checkbox" name="popularity" value="low"> Less Popular
+                            </label>
+                            <label class="popularity-option">
+                                <input type="checkbox" name="popularity" value="medium"> Moderately Popular
+                            </label>
+                            <label class="popularity-option">
+                                <input type="checkbox" name="popularity" value="high"> Very Popular
+                            </label>
+                        </div>
+                    </div>
+
+                    <button id="reset-filters" class="reset-filters">
+                        <i class="fas fa-redo-alt"></i> Reset All Filters
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Results Section -->
+            <section class="results-section">
+                <div class="results-header">
+                    <h2>Discover Cities</h2>
+                    <div class="results-count">
+                        Showing <span id="results-number">8</span> cities
+                    </div>
+                    <div class="sort-options">
+                        <select id="sort-options">
+                            <option value="name">Sort by Name</option>
+                            <option value="cost-low">Sort by Cost: Low to High</option>
+                            <option value="cost-high">Sort by Cost: High to Low</option>
+                            <option value="popularity">Sort by Popularity</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="cities-grid" id="cities-container">
+                    <!-- Cities will be dynamically loaded here -->
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <footer class="container">
+        <p>&copy; 2023 Trip Planner Pro. Discover your next adventure.</p>
+    </footer>
+
+    <script>
+        // City data
+        const cities = [
+            {
+                id: 1,
+                name: "Rome",
+                country: "Italy",
+                countryCode: "it",
+                cost: "medium",
+                popularity: "high",
+                description: "The Eternal City with ancient ruins, Renaissance art, and vibrant street life.",
+                image: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 2,
+                name: "Paris",
+                country: "France",
+                countryCode: "fr",
+                cost: "high",
+                popularity: "high",
+                description: "City of Light, famous for its art, fashion, gastronomy, and culture.",
+                image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 3,
+                name: "Barcelona",
+                country: "Spain",
+                countryCode: "es",
+                cost: "medium",
+                popularity: "high",
+                description: "Vibrant city with unique architecture, beautiful beaches, and lively atmosphere.",
+                image: "https://images.unsplash.com/photo-1583422409516-2895a77efded?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 4,
+                name: "Kyoto",
+                country: "Japan",
+                countryCode: "jp",
+                cost: "medium",
+                popularity: "medium",
+                description: "Ancient capital with stunning temples, gardens, and traditional Geisha districts.",
+                image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 5,
+                name: "New York",
+                country: "USA",
+                countryCode: "us",
+                cost: "high",
+                popularity: "high",
+                description: "The city that never sleeps, with iconic landmarks and diverse culture.",
+                image: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 6,
+                name: "Chiang Mai",
+                country: "Thailand",
+                countryCode: "th",
+                cost: "low",
+                popularity: "medium",
+                description: "Cultural hub of Northern Thailand with beautiful temples and mountains.",
+                image: "https://images.unsplash.com/photo-1552465011-b4e30bf7349d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 7,
+                name: "Santorini",
+                country: "Greece",
+                countryCode: "gr",
+                cost: "high",
+                popularity: "high",
+                description: "Stunning island with whitewashed buildings, blue domes, and breathtaking sunsets.",
+                image: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 8,
+                name: "Sydney",
+                country: "Australia",
+                countryCode: "au",
+                cost: "high",
+                popularity: "medium",
+                description: "Vibrant harbor city with iconic opera house, beaches, and outdoor lifestyle.",
+                image: "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+            }
+        ];
+
+        // State management
+        let tripCities = [];
+        let filteredCities = [...cities];
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            renderCities(filteredCities);
+            setupEventListeners();
+            updateTripCount();
+        });
+
+        // Render cities to the page
+        function renderCities(citiesArray) {
+            const container = document.getElementById('cities-container');
+            const resultsNumber = document.getElementById('results-number');
+            
+            // Update results count
+            resultsNumber.textContent = citiesArray.length;
+            
+            // Clear container
+            container.innerHTML = '';
+            
+            if (citiesArray.length === 0) {
+                container.innerHTML = '<div class="no-results"><i class="fas fa-search" style="font-size: 3rem; margin-bottom: 15px;"></i><h3>No cities found</h3><p>Try adjusting your search or filters</p></div>';
+                return;
+            }
+            
+            // Create city cards
+            citiesArray.forEach(city => {
+                const isInTrip = tripCities.includes(city.id);
+                
+                const cityCard = document.createElement('div');
+                cityCard.className = 'city-card';
+                
+                // Determine cost and popularity colors/text
+                const costText = city.cost.charAt(0).toUpperCase() + city.cost.slice(1);
+                const popularityText = city.popularity.charAt(0).toUpperCase() + city.popularity.slice(1);
+                
+                cityCard.innerHTML = `
+                    <div class="city-image" style="background-image: url('${city.image}')">
+                    </div>
+                    <div class="city-info">
+                        <div class="city-header">
+                            <div>
+                                <div class="city-name">${city.name}</div>
+                                <div class="city-country"><i class="fas fa-globe-americas"></i> ${city.country}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="city-stats">
+                            <div class="stat">
+                                <span class="stat-label">Cost Index</span>
+                                <span class="stat-value cost-${city.cost}">${costText}</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Popularity</span>
+                                <span class="stat-value popularity-${city.popularity}">${popularityText}</span>
+                            </div>
+                        </div>
+                        
+                        <p class="city-description">${city.description}</p>
+                        
+                        <button class="add-to-trip-btn ${isInTrip ? 'added' : ''}" data-id="${city.id}">
+                            <i class="fas ${isInTrip ? 'fa-check' : 'fa-plus'}"></i> 
+                            ${isInTrip ? 'Added to Trip' : 'Add to Trip'}
+                        </button>
+                        <div class="added-text" id="added-text-${city.id}" style="${isInTrip ? 'display: block;' : 'display: none;'}">
+                            <i class="fas fa-check-circle"></i> Added to your trip
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(cityCard);
+            });
+            
+            // Add event listeners to the newly created buttons
+            document.querySelectorAll('.add-to-trip-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const cityId = parseInt(this.getAttribute('data-id'));
+                    toggleCityInTrip(cityId);
+                });
+            });
+        }
+
+        // Toggle city in trip
+        function toggleCityInTrip(cityId) {
+            const index = tripCities.indexOf(cityId);
+            const button = document.querySelector(`.add-to-trip-btn[data-id="${cityId}"]`);
+            const addedText = document.getElementById(`added-text-${cityId}`);
+            
+            if (index === -1) {
+                // Add to trip
+                tripCities.push(cityId);
+                button.innerHTML = '<i class="fas fa-check"></i> Added to Trip';
+                button.classList.add('added');
+                addedText.style.display = 'block';
+                
+                // Add pulse animation
+                button.classList.add('pulse');
+                setTimeout(() => button.classList.remove('pulse'), 500);
+            } else {
+                // Remove from trip
+                tripCities.splice(index, 1);
+                button.innerHTML = '<i class="fas fa-plus"></i> Add to Trip';
+                button.classList.remove('added');
+                addedText.style.display = 'none';
+            }
+            
+            updateTripCount();
+        }
+
+        // Update trip count display
+        function updateTripCount() {
+            const tripCountElement = document.getElementById('trip-count');
+            tripCountElement.textContent = tripCities.length;
+        }
+
+        // Filter cities based on search and filters
+        function filterCities() {
+            const searchInput = document.getElementById('search-input').value.toLowerCase();
+            const countryFilter = document.getElementById('country-filter').value;
+            const costFilters = Array.from(document.querySelectorAll('input[name="cost"]:checked')).map(cb => cb.value);
+            const popularityFilters = Array.from(document.querySelectorAll('input[name="popularity"]:checked')).map(cb => cb.value);
+            
+            // Apply filters
+            filteredCities = cities.filter(city => {
+                // Search filter
+                const matchesSearch = searchInput === '' || 
+                    city.name.toLowerCase().includes(searchInput) || 
+                    city.country.toLowerCase().includes(searchInput);
+                
+                // Country filter
+                const matchesCountry = countryFilter === 'all' || city.country.toLowerCase() === countryFilter;
+                
+                // Cost filter
+                const matchesCost = costFilters.length === 0 || costFilters.includes(city.cost);
+                
+                // Popularity filter
+                const matchesPopularity = popularityFilters.length === 0 || popularityFilters.includes(city.popularity);
+                
+                return matchesSearch && matchesCountry && matchesCost && matchesPopularity;
+            });
+            
+            // Apply sorting
+            applySorting();
+        }
+
+        // Apply sorting to filtered cities
+        function applySorting() {
+            const sortOption = document.getElementById('sort-options').value;
+            
+            switch(sortOption) {
+                case 'name':
+                    filteredCities.sort((a, b) => a.name.localeCompare(b.name));
+                    break;
+                case 'cost-low':
+                    const costOrder = {low: 1, medium: 2, high: 3};
+                    filteredCities.sort((a, b) => costOrder[a.cost] - costOrder[b.cost]);
+                    break;
+                case 'cost-high':
+                    const costOrderHigh = {low: 3, medium: 2, high: 1};
+                    filteredCities.sort((a, b) => costOrderHigh[a.cost] - costOrderHigh[b.cost]);
+                    break;
+                case 'popularity':
+                    const popularityOrder = {low: 1, medium: 2, high: 3};
+                    filteredCities.sort((a, b) => popularityOrder[b.popularity] - popularityOrder[a.popularity]);
+                    break;
+            }
+            
+            renderCities(filteredCities);
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Search input
+            document.getElementById('search-input').addEventListener('input', filterCities);
+            
+            // Country filter
+            document.getElementById('country-filter').addEventListener('change', filterCities);
+            
+            // Cost and popularity filters
+            document.querySelectorAll('input[name="cost"], input[name="popularity"]').forEach(checkbox => {
+                checkbox.addEventListener('change', filterCities);
+            });
+            
+            // Sort options
+            document.getElementById('sort-options').addEventListener('change', applySorting);
+            
+            // Reset filters button
+            document.getElementById('reset-filters').addEventListener('click', function() {
+                // Reset search
+                document.getElementById('search-input').value = '';
+                
+                // Reset country filter
+                document.getElementById('country-filter').value = 'all';
+                
+                // Reset cost filters
+                document.querySelectorAll('input[name="cost"]').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                
+                // Reset popularity filters
+                document.querySelectorAll('input[name="popularity"]').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                
+                // Reset sorting
+                document.getElementById('sort-options').value = 'name';
+                
+                // Reapply filters
+                filterCities();
+                
+                // Add animation to reset button
+                this.classList.add('pulse');
+                setTimeout(() => this.classList.remove('pulse'), 500);
+            });
+        }
+    </script>
+</body>
+</html>
