@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trip Calendar / Timeline - User Input</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        .trip-setup {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+
+        .setup-title {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        .date-range {
+            display: flex;
+            gap: 20px;
+        }
+
+        .date-input {
+            flex: 1;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: #ecf0f1;
+            color: #2c3e50;
+        }
+
+        .btn-secondary:hover {
+            background-color: #d5dbdb;
+        }
+
+        .view-toggle {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 25px;
+            background-color: white;
+            border-radius: 50px;
+            padding: 5px;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .toggle-btn {
+            padding: 10px 25px;
+            border: none;
+            background: none;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            color: #7f8c8d;
+        }
+
+        .toggle-btn.active {
+            background-color: #3498db;
+            color: white;
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+        }
+
+        .content-area {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        /* Calendar View */
+        .calendar-view {
+            flex: 1;
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            display: none;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .calendar-month {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background-color: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #3498db;
+            font-size: 1.2rem;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover {
+            background-color: #e1e8f0;
+        }
+
+        .calendar-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 600;
+            color: #7f8c8d;
+        }
+
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .calendar-day {
+            height: 70px;
+            border-radius: 10px;
+            padding: 8px;
+            background-color: #f8fafc;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .calendar-day:hover {
+            background-color: #e8f4fc;
+        }
+
+        .calendar-day.active {
+            background-color: #e1f0ff;
+            border: 2px solid #3498db;
+        }
+
+        .calendar-day.trip-day {
+            background-color: #e8f4fc;
+            border: 1px solid #a5d8ff;
+        }
+
+        .calendar-day.has-activities::after {
+            content: '';
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #e74c3c;
+        }
+
+        .day-number {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: auto;
+        }
+
+        .activity-count {
+            font-size: 0.8rem;
+            color: #3498db;
+            font-weight: 600;
+            margin-top: auto;
+            text-align: center;
+        }
+
+        /* Timeline View */
+        .timeline-view {
+            flex: 1;
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            display: none;
+            overflow-y: auto;
+            max-height: 600px;
+        }
+
+        .empty-timeline {
+            text-align: center;
+            padding: 40px 20px;
+            color: #7f8c8d;
+        }
+
+        .empty-timeline i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #bdc3c7;
+        }
+
+        .timeline-day {
+            margin-bottom: 25px;
+            border-left: 3px solid #3498db;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .timeline-day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .day-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .day-date {
+            color: #7f8c8d;
+            font-size: 1rem;
+        }
+
+        .expand-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: none;
+            background-color: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #3498db;
+            transition: all 0.2s;
+        }
+
+        .expand-btn:hover {
+            background-color: #e1e8f0;
+        }
+
+        .timeline-activities {
+            display: block;
+        }
+
+        .activity-item {
+            background-color: #f8fafc;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            cursor: move;
+            transition: all 0.2s;
+            border-left: 4px solid #3498db;
+        }
+
+        .activity-item:hover {
+            background-color: #e8f4fc;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #e1f0ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: #3498db;
+            font-size: 1.2rem;
+        }
+
+        .activity-details {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .activity-time {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+
+        .activity-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: none;
+            background-color: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #7f8c8d;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background-color: #e1e8f0;
+            color: #3498db;
+        }
+
+        .day-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f1f8ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .day-activity-count {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .day-total-duration {
+            color: #7f8c8d;
+        }
+
+        .add-activity-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 12px;
+            background-color: #f8fafc;
+            border: 2px dashed #bdc3c7;
+            border-radius: 10px;
+            color: #7f8c8d;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+
+        .add-activity-btn:hover {
+            background-color: #e8f4fc;
+            border-color: #3498db;
+            color: #3498db;
+        }
+
+        .drag-instructions {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        .drag-instructions i {
+            color: #3498db;
+            margin-right: 5px;
+        }
+
+        .activity-form-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .activity-form {
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .form-header h3 {
+            color: #2c3e50;
+        }
+
+        .close-form {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #7f8c8d;
+            cursor: pointer;
+        }
+
+        .time-inputs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .time-inputs > div {
+            flex: 1;
+        }
+
+        .icon-selector {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .icon-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f1f5f9;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .icon-option.selected {
+            background-color: #3498db;
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .content-area {
+                flex-direction: column;
+            }
+            
+            .calendar-view, .timeline-view {
+                width: 100%;
+            }
+            
+            .date-range {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .calendar-day {
+                height: 50px;
+                padding: 5px;
+            }
+            
+            .day-number {
+                font-size: 0.9rem;
+            }
+            
+            .activity-count {
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Dragging styles */
+        .dragging {
+            opacity: 0.5;
+            transform: rotate(2deg);
+        }
+
+        .drag-over {
+            border-top: 2px dashed #3498db;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Trip Calendar / Timeline</h1>
+            <p class="subtitle">Plan your trip by entering your travel dates and activities</p>
+        </header>
+
+        <!-- Trip Setup Form -->
+        <div class="trip-setup" id="tripSetup">
+            <h2 class="setup-title">Trip Information</h2>
+            
+            <div class="form-group">
+                <label for="tripName">Trip Name</label>
+                <input type="text" id="tripName" placeholder="e.g., Summer Vacation 2023">
+            </div>
+            
+            <div class="form-group">
+                <label for="tripDestination">Destination</label>
+                <input type="text" id="tripDestination" placeholder="e.g., Paris, France">
+            </div>
+            
+            <div class="form-group">
+                <label for="tripDates">Trip Dates</label>
+                <div class="date-range">
+                    <div class="date-input">
+                        <label for="startDate">Start Date</label>
+                        <input type="date" id="startDate">
+                    </div>
+                    <div class="date-input">
+                        <label for="endDate">End Date</label>
+                        <input type="date" id="endDate">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="tripDescription">Trip Description (Optional)</label>
+                <textarea id="tripDescription" rows="3" placeholder="Describe your trip..."></textarea>
+            </div>
+            
+            <div class="form-actions">
+                <button class="btn btn-secondary" id="clearForm">Clear</button>
+                <button class="btn btn-primary" id="createTrip">Create Trip Plan</button>
+            </div>
+        </div>
+
+        <!-- Activity Form (Hidden Initially) -->
+        <div class="activity-form-overlay" id="activityFormOverlay">
+            <div class="activity-form">
+                <div class="form-header">
+                    <h3>Add Activity</h3>
+                    <button class="close-form" id="closeActivityForm">&times;</button>
+                </div>
+                
+                <div class="form-group">
+                    <label for="activityTitle">Activity Title</label>
+                    <input type="text" id="activityTitle" placeholder="e.g., Visit Eiffel Tower">
+                </div>
+                
+                <div class="form-group">
+                    <label for="activityDescription">Description (Optional)</label>
+                    <textarea id="activityDescription" rows="2" placeholder="Activity details..."></textarea>
+                </div>
+                
+                <div class="time-inputs">
+                    <div>
+                        <label for="activityStartTime">Start Time</label>
+                        <input type="time" id="activityStartTime">
+                    </div>
+                    <div>
+                        <label for="activityEndTime">End Time</label>
+                        <input type="time" id="activityEndTime">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Activity Icon</label>
+                    <div class="icon-selector">
+                        <div class="icon-option selected" data-icon="fas fa-landmark">
+                            <i class="fas fa-landmark"></i>
+                        </div>
+                        <div class="icon-option" data-icon="fas fa-utensils">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <div class="icon-option" data-icon="fas fa-hiking">
+                            <i class="fas fa-hiking"></i>
+                        </div>
+                        <div class="icon-option" data-icon="fas fa-museum">
+                            <i class="fas fa-museum"></i>
+                        </div>
+                        <div class="icon-option" data-icon="fas fa-car">
+                            <i class="fas fa-car"></i>
+                        </div>
+                        <div class="icon-option" data-icon="fas fa-shopping-bag">
+                            <i class="fas fa-shopping-bag"></i>
+                        </div>
+                        <div class="icon-option" data-icon="fas fa-camera">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <div class="icon-option" data-icon="fas fa-swimming-pool">
+                            <i class="fas fa-swimming-pool"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn btn-secondary" id="cancelActivity">Cancel</button>
+                    <button class="btn btn-primary" id="saveActivity">Add Activity</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area (Hidden Initially) -->
+        <div id="mainContent" style="display: none;">
+            <div class="view-toggle">
+                <button class="toggle-btn active" id="calendarToggle">
+                    <i class="fas fa-calendar-alt"></i> Calendar View
+                </button>
+                <button class="toggle-btn" id="timelineToggle">
+                    <i class="fas fa-stream"></i> Timeline View
+                </button>
+            </div>
+
+            <div class="content-area">
+                <div class="calendar-view" id="calendarView">
+                    <div class="calendar-header">
+                        <div class="calendar-month" id="currentMonth">September 2023</div>
+                        <div class="calendar-nav">
+                            <button class="nav-btn" id="prevMonth"><i class="fas fa-chevron-left"></i></button>
+                            <button class="nav-btn" id="todayMonth">Today</button>
+                            <button class="nav-btn" id="nextMonth"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="calendar-weekdays">
+                        <div>Sun</div>
+                        <div>Mon</div>
+                        <div>Tue</div>
+                        <div>Wed</div>
+                        <div>Thu</div>
+                        <div>Fri</div>
+                        <div>Sat</div>
+                    </div>
+                    
+                    <div class="calendar-days" id="calendarDays">
+                        <!-- Calendar days will be generated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="timeline-view" id="timelineView">
+                    <div id="timelineContent">
+                        <!-- Timeline will be generated by JavaScript -->
+                    </div>
+                    
+                    <div class="drag-instructions">
+                        <i class="fas fa-arrows-alt"></i> Drag activities to reorder them within a day
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Trip data
+        let tripData = {
+            name: '',
+            destination: '',
+            startDate: null,
+            endDate: null,
+            description: '',
+            days: []
+        };
+        
+        let currentDate = new Date();
+        let currentMonth = currentDate.getMonth();
+        let currentYear = currentDate.getFullYear();
+        let selectedDayForActivity = null;
+        let selectedIcon = 'fas fa-landmark';
+        
+        // DOM Elements
+        const tripSetup = document.getElementById('tripSetup');
+        const mainContent = document.getElementById('mainContent');
+        const calendarView = document.getElementById('calendarView');
+        const timelineView = document.getElementById('timelineView');
+        const calendarToggle = document.getElementById('calendarToggle');
+        const timelineToggle = document.getElementById('timelineToggle');
+        const calendarDaysContainer = document.getElementById('calendarDays');
+        const currentMonthElement = document.getElementById('currentMonth');
+        const prevMonthButton = document.getElementById('prevMonth');
+        const nextMonthButton = document.getElementById('nextMonth');
+        const todayMonthButton = document.getElementById('todayMonth');
+        const timelineContent = document.getElementById('timelineContent');
+        const activityFormOverlay = document.getElementById('activityFormOverlay');
+        
+        // Form elements
+        const tripNameInput = document.getElementById('tripName');
+        const tripDestinationInput = document.getElementById('tripDestination');
+        const startDateInput = document.getElementById('startDate');
+        const endDateInput = document.getElementById('endDate');
+        const tripDescriptionInput = document.getElementById('tripDescription');
+        const createTripButton = document.getElementById('createTrip');
+        const clearFormButton = document.getElementById('clearForm');
+        
+        // Activity form elements
+        const activityTitleInput = document.getElementById('activityTitle');
+        const activityDescriptionInput = document.getElementById('activityDescription');
+        const activityStartTimeInput = document.getElementById('activityStartTime');
+        const activityEndTimeInput = document.getElementById('activityEndTime');
+        const closeActivityFormButton = document.getElementById('closeActivityForm');
+        const cancelActivityButton = document.getElementById('cancelActivity');
+        const saveActivityButton = document.getElementById('saveActivity');
+        const iconOptions = document.querySelectorAll('.icon-option');
+        
+        // Set default dates (tomorrow to 5 days from now)
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const defaultEndDate = new Date();
+        defaultEndDate.setDate(tomorrow.getDate() + 4);
+        
+        startDateInput.valueAsDate = tomorrow;
+        endDateInput.valueAsDate = defaultEndDate;
+        
+        // Create Trip
+        createTripButton.addEventListener('click', () => {
+            const tripName = tripNameInput.value.trim();
+            const tripDestination = tripDestinationInput.value.trim();
+            const startDate = new Date(startDateInput.value);
+            const endDate = new Date(endDateInput.value);
+            const tripDescription = tripDescriptionInput.value.trim();
+            
+            // Validate inputs
+            if (!tripName) {
+                alert('Please enter a trip name');
+                return;
+            }
+            
+            if (!tripDestination) {
+                alert('Please enter a destination');
+                return;
+            }
+            
+            if (!startDateInput.value || !endDateInput.value) {
+                alert('Please select trip dates');
+                return;
+            }
+            
+            if (startDate > endDate) {
+                alert('End date must be after start date');
+                return;
+            }
+            
+            // Save trip data
+            tripData.name = tripName;
+            tripData.destination = tripDestination;
+            tripData.startDate = startDate;
+            tripData.endDate = endDate;
+            tripData.description = tripDescription;
+            
+            // Generate trip days
+            generateTripDays();
+            
+            // Hide setup form and show main content
+            tripSetup.style.display = 'none';
+            mainContent.style.display = 'block';
+            
+            // Show calendar view by default
+            calendarView.style.display = 'block';
+            calendarToggle.classList.add('active');
+            
+            // Render calendar and timeline
+            renderCalendar(currentMonth, currentYear);
+            renderTimeline();
+        });
+        
+        // Clear Form
+        clearFormButton.addEventListener('click', () => {
+            tripNameInput.value = '';
+            tripDestinationInput.value = '';
+            tripDescriptionInput.value = '';
+            
+            // Reset to default dates
+            startDateInput.valueAsDate = tomorrow;
+            endDateInput.valueAsDate = defaultEndDate;
+        });
+        
+        // Generate trip days array
+        function generateTripDays() {
+            tripData.days = [];
+            const start = new Date(tripData.startDate);
+            const end = new Date(tripData.endDate);
+            
+            // Calculate difference in days
+            const timeDiff = end.getTime() - start.getTime();
+            const dayDiff = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1;
+            
+            // Create day objects
+            for (let i = 0; i < dayDiff; i++) {
+                const dayDate = new Date(start);
+                dayDate.setDate(start.getDate() + i);
+                
+                const dayName = dayDate.toLocaleDateString('en-US', { weekday: 'long' });
+                const formattedDate = dayDate.toLocaleDateString('en-US', { 
+                    month: 'long', 
+                    day: 'numeric', 
+                    year: 'numeric' 
+                });
+                
+                tripData.days.push({
+                    dayNumber: i + 1,
+                    date: new Date(dayDate),
+                    dayName: dayName,
+                    formattedDate: formattedDate,
+                    activities: []
+                });
+            }
+            
+            // Add sample activities for first day
+            if (tripData.days.length > 0) {
+                tripData.days[0].activities = [
+                    {
+                        id: Date.now(),
+                        title: "Arrival & Check-in",
+                        description: "Arrive at destination and check into accommodation",
+                        startTime: "14:00",
+                        endTime: "15:00",
+                        icon: "fas fa-hotel"
+                    },
+                    {
+                        id: Date.now() + 1,
+                        title: "Explore Local Area",
+                        description: "Walk around and get familiar with the neighborhood",
+                        startTime: "16:00",
+                        endTime: "18:00",
+                        icon: "fas fa-walking"
+                    }
+                ];
+            }
+        }
+        
+        // Calendar Functionality
+        function renderCalendar(month, year) {
+            // Update month display
+            const monthNames = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"];
+            currentMonthElement.textContent = `${monthNames[month]} ${year}`;
+            
+            // Clear previous calendar days
+            calendarDaysContainer.innerHTML = '';
+            
+            // Get first day of month and total days
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            
+            // Add empty cells for days before the first day of the month
+            for (let i = 0; i < firstDay; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.classList.add('calendar-day');
+                calendarDaysContainer.appendChild(emptyDay);
+            }
+            
+            // Add days of the month
+            const today = new Date();
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.classList.add('calendar-day');
+                dayElement.innerHTML = `<div class="day-number">${day}</div>`;
+                
+                const currentDayDate = new Date(year, month, day);
+                
+                // Check if this day is within the trip range
+                const isTripDay = tripData.days.some(tripDay => 
+                    tripDay.date.getDate() === currentDayDate.getDate() &&
+                    tripDay.date.getMonth() === currentDayDate.getMonth() &&
+                    tripDay.date.getFullYear() === currentDayDate.getFullYear()
+                );
+                
+                if (isTripDay) {
+                    dayElement.classList.add('trip-day');
+                    
+                    // Find the trip day
+                    const tripDay = tripData.days.find(day => 
+                        day.date.getDate() === currentDayDate.getDate() &&
+                        day.date.getMonth() === currentDayDate.getMonth() &&
+                        day.date.getFullYear() === currentDayDate.getFullYear()
+                    );
+                    
+                    if (tripDay.activities.length > 0) {
+                        dayElement.classList.add('has-activities');
+                        dayElement.innerHTML += `<div class="activity-count">${tripDay.activities.length} activities</div>`;
+                    }
+                }
+                
+                // Highlight today
+                if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+                    dayElement.classList.add('active');
+                }
+                
+                // Add click event to select day
+                dayElement.addEventListener('click', () => {
+                    // Remove active class from all days
+                    document.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('active'));
+                    // Add active class to clicked day
+                    dayElement.classList.add('active');
+                    
+                    // Switch to timeline view and scroll to that day
+                    if (isTripDay) {
+                        timelineToggle.click();
+                        setTimeout(() => {
+                            const dayIndex = tripData.days.findIndex(day => 
+                                day.date.getDate() === currentDayDate.getDate() &&
+                                day.date.getMonth() === currentDayDate.getMonth() &&
+                                day.date.getFullYear() === currentDayDate.getFullYear()
+                            );
+                            const timelineDay = document.querySelector(`.timeline-day[data-day="${dayIndex + 1}"]`);
+                            if (timelineDay) {
+                                timelineDay.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
+                        }, 100);
+                    }
+                });
+                
+                calendarDaysContainer.appendChild(dayElement);
+            }
+        }
+        
+        // Timeline Functionality
+        function renderTimeline() {
+            if (tripData.days.length === 0) {
+                timelineContent.innerHTML = `
+                    <div class="empty-timeline">
+                        <i class="fas fa-calendar-plus"></i>
+                        <h3>No Trip Days</h3>
+                        <p>Create a trip plan using the form above</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let timelineHTML = `<h2 style="margin-bottom: 20px; color: #2c3e50;">${tripData.name} - ${tripData.destination}</h2>`;
+            
+            tripData.days.forEach((day, index) => {
+                timelineHTML += `
+                    <div class="timeline-day" data-day="${index + 1}">
+                        <div class="timeline-day-header">
+                            <div>
+                                <div class="day-title">Day ${day.dayNumber}: ${day.dayName}</div>
+                                <div class="day-date">${day.formattedDate}</div>
+                            </div>
+                            <button class="expand-btn"><i class="fas fa-chevron-down"></i></button>
+                        </div>
+                        
+                        <div class="timeline-activities">
+                `;
+                
+                if (day.activities.length > 0) {
+                    day.activities.forEach(activity => {
+                        timelineHTML += `
+                            <div class="activity-item" data-activity="${activity.id}">
+                                <div class="activity-icon">
+                                    <i class="${activity.icon}"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <div class="activity-title">${activity.title}</div>
+                                    <div class="activity-time">${formatTime(activity.startTime)} - ${formatTime(activity.endTime)}</div>
+                                    ${activity.description ? `<div class="activity-description" style="font-size: 0.85rem; color: #7f8c8d; margin-top: 3px;">${activity.description}</div>` : ''}
+                                </div>
+                                <div class="activity-actions">
+                                    <button class="action-btn edit-activity-btn"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete-activity-btn"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    timelineHTML += `<p style="color: #7f8c8d; text-align: center; padding: 20px;">No activities planned for this day</p>`;
+                }
+                
+                timelineHTML += `
+                        </div>
+                        
+                        <button class="add-activity-btn" data-day="${index + 1}">
+                            <i class="fas fa-plus"></i> Add Activity
+                        </button>
+                        
+                        <div class="day-summary">
+                            <div class="day-activity-count">${day.activities.length} ${day.activities.length === 1 ? 'activity' : 'activities'}</div>
+                            <div class="day-total-duration">${calculateDayDuration(day.activities)}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            timelineContent.innerHTML = timelineHTML;
+            
+            // Add event listeners
+            initializeTimelineEventListeners();
+            initializeDragAndDrop();
+        }
+        
+        // Format time for display
+        function formatTime(timeStr) {
+            if (!timeStr) return '';
+            
+            const [hours, minutes] = timeStr.split(':');
+            const hour = parseInt(hours);
+            const ampm = hour >= 12 ? 'PM' : 'AM';
+            const displayHour = hour % 12 || 12;
+            
+            return `${displayHour}:${minutes} ${ampm}`;
+        }
+        
+        // Calculate total duration for a day
+        function calculateDayDuration(activities) {
+            if (activities.length === 0) return 'No activities';
+            
+            let totalMinutes = 0;
+            
+            activities.forEach(activity => {
+                const start = timeToMinutes(activity.startTime);
+                const end = timeToMinutes(activity.endTime);
+                totalMinutes += end - start;
+            });
+            
+            const hours = Math.floor(totalMinutes / 60);
+            const minutes = totalMinutes % 60;
+            
+            if (hours === 0) return `Total: ${minutes} min`;
+            if (minutes === 0) return `Total: ${hours} hr`;
+            return `Total: ${hours} hr ${minutes} min`;
+        }
+        
+        // Convert time string to minutes
+        function timeToMinutes(timeStr) {
+            if (!timeStr) return 0;
+            const [hours, minutes] = timeStr.split(':');
+            return parseInt(hours) * 60 + parseInt(minutes);
+        }
+        
+        // Initialize timeline event listeners
+        function initializeTimelineEventListeners() {
+            // Expand/Collapse buttons
+            document.querySelectorAll('.expand-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const dayElement = this.closest('.timeline-day');
+                    const activities = dayElement.querySelector('.timeline-activities');
+                    const addButton = dayElement.querySelector('.add-activity-btn');
+                    const summary = dayElement.querySelector('.day-summary');
+                    
+                    if (activities.style.display === 'none') {
+                        activities.style.display = 'block';
+                        addButton.style.display = 'flex';
+                        summary.style.display = 'flex';
+                        this.innerHTML = '<i class="fas fa-chevron-down"></i>';
+                    } else {
+                        activities.style.display = 'none';
+                        addButton.style.display = 'none';
+                        summary.style.display = 'none';
+                        this.innerHTML = '<i class="fas fa-chevron-right"></i>';
+                    }
+                });
+            });
+            
+            // Add activity buttons
+            document.querySelectorAll('.add-activity-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const dayNumber = parseInt(this.getAttribute('data-day'));
+                    selectedDayForActivity = dayNumber;
+                    
+                    // Reset form
+                    activityTitleInput.value = '';
+                    activityDescriptionInput.value = '';
+                    activityStartTimeInput.value = '09:00';
+                    activityEndTimeInput.value = '10:00';
+                    
+                    // Show form
+                    activityFormOverlay.style.display = 'flex';
+                });
+            });
+            
+            // Edit activity buttons
+            document.querySelectorAll('.edit-activity-btn').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const activityItem = this.closest('.activity-item');
+                    const activityId = parseInt(activityItem.getAttribute('data-activity'));
+                    
+                    // Find which day this activity belongs to
+                    const dayElement = activityItem.closest('.timeline-day');
+                    const dayNumber = parseInt(dayElement.getAttribute('data-day'));
+                    const day = tripData.days[dayNumber - 1];
+                    const activity = day.activities.find(a => a.id === activityId);
+                    
+                    if (activity) {
+                        // Populate form
+                        activityTitleInput.value = activity.title;
+                        activityDescriptionInput.value = activity.description || '';
+                        activityStartTimeInput.value = activity.startTime;
+                        activityEndTimeInput.value = activity.endTime;
+                        
+                        // Select icon
+                        selectedIcon = activity.icon;
+                        iconOptions.forEach(iconOption => {
+                            if (iconOption.getAttribute('data-icon') === selectedIcon) {
+                                iconOption.classList.add('selected');
+                            } else {
+                                iconOption.classList.remove('selected');
+                            }
+                        });
+                        
+                        selectedDayForActivity = dayNumber;
+                        
+                        // Show form
+                        activityFormOverlay.style.display = 'flex';
+                        
+                        // Change button text to "Update"
+                        saveActivityButton.textContent = 'Update Activity';
+                        saveActivityButton.setAttribute('data-activity-id', activityId);
+                    }
+                });
+            });
+            
+            // Delete activity buttons
+            document.querySelectorAll('.delete-activity-btn').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const activityItem = this.closest('.activity-item');
+                    const activityId = parseInt(activityItem.getAttribute('data-activity'));
+                    
+                    // Find which day this activity belongs to
+                    const dayElement = activityItem.closest('.timeline-day');
+                    const dayNumber = parseInt(dayElement.getAttribute('data-day'));
+                    const day = tripData.days[dayNumber - 1];
+                    const activity = day.activities.find(a => a.id === activityId);
+                    
+                    if (activity && confirm(`Delete activity: ${activity.title}?`)) {
+                        // Remove from data
+                        day.activities = day.activities.filter(a => a.id !== activityId);
+                        
+                        // Re-render timeline
+                        renderTimeline();
+                        renderCalendar(currentMonth, currentYear);
+                    }
+                });
+            });
+        }
+        
+        // Icon selection
+        iconOptions.forEach(iconOption => {
+            iconOption.addEventListener('click', function() {
+                iconOptions.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedIcon = this.getAttribute('data-icon');
+            });
+        });
+        
+        // Activity form handling
+        closeActivityFormButton.addEventListener('click', () => {
+            activityFormOverlay.style.display = 'none';
+            saveActivityButton.textContent = 'Add Activity';
+            saveActivityButton.removeAttribute('data-activity-id');
+        });
+        
+        cancelActivityButton.addEventListener('click', () => {
+            activityFormOverlay.style.display = 'none';
+            saveActivityButton.textContent = 'Add Activity';
+            saveActivityButton.removeAttribute('data-activity-id');
+        });
+        
+        saveActivityButton.addEventListener('click', () => {
+            const activityTitle = activityTitleInput.value.trim();
+            const activityDescription = activityDescriptionInput.value.trim();
+            const activityStartTime = activityStartTimeInput.value;
+            const activityEndTime = activityEndTimeInput.value;
+            const activityId = saveActivityButton.getAttribute('data-activity-id');
+            
+            // Validate
+            if (!activityTitle) {
+                alert('Please enter an activity title');
+                return;
+            }
+            
+            if (!activityStartTime || !activityEndTime) {
+                alert('Please select start and end times');
+                return;
+            }
+            
+            if (activityStartTime >= activityEndTime) {
+                alert('End time must be after start time');
+                return;
+            }
+            
+            if (selectedDayForActivity === null) return;
+            
+            const day = tripData.days[selectedDayForActivity - 1];
+            
+            if (activityId) {
+                // Update existing activity
+                const activityIndex = day.activities.findIndex(a => a.id === parseInt(activityId));
+                if (activityIndex !== -1) {
+                    day.activities[activityIndex] = {
+                        id: parseInt(activityId),
+                        title: activityTitle,
+                        description: activityDescription,
+                        startTime: activityStartTime,
+                        endTime: activityEndTime,
+                        icon: selectedIcon
+                    };
+                }
+            } else {
+                // Add new activity
+                day.activities.push({
+                    id: Date.now(),
+                    title: activityTitle,
+                    description: activityDescription,
+                    startTime: activityStartTime,
+                    endTime: activityEndTime,
+                    icon: selectedIcon
+                });
+            }
+            
+            // Close form and reset
+            activityFormOverlay.style.display = 'none';
+            saveActivityButton.textContent = 'Add Activity';
+            saveActivityButton.removeAttribute('data-activity-id');
+            selectedDayForActivity = null;
+            
+            // Re-render timeline and calendar
+            renderTimeline();
+            renderCalendar(currentMonth, currentYear);
+        });
+        
+        // View Toggle Functionality
+        calendarToggle.addEventListener('click', () => {
+            calendarView.style.display = 'block';
+            timelineView.style.display = 'none';
+            calendarToggle.classList.add('active');
+            timelineToggle.classList.remove('active');
+        });
+        
+        timelineToggle.addEventListener('click', () => {
+            calendarView.style.display = 'none';
+            timelineView.style.display = 'block';
+            timelineToggle.classList.add('active');
+            calendarToggle.classList.remove('active');
+        });
+        
+        // Calendar Navigation
+        prevMonthButton.addEventListener('click', () => {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            renderCalendar(currentMonth, currentYear);
+        });
+        
+        nextMonthButton.addEventListener('click', () => {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            renderCalendar(currentMonth, currentYear);
+        });
+        
+        todayMonthButton.addEventListener('click', () => {
+            currentDate = new Date();
+            currentMonth = currentDate.getMonth();
+            currentYear = currentDate.getFullYear();
+            renderCalendar(currentMonth, currentYear);
+        });
+        
+        // Drag and Drop Functionality
+        function initializeDragAndDrop() {
+            let draggedItem = null;
+            
+            document.querySelectorAll('.activity-item').forEach(item => {
+                item.setAttribute('draggable', 'true');
+                
+                item.addEventListener('dragstart', function() {
+                    draggedItem = this;
+                    setTimeout(() => {
+                        this.classList.add('dragging');
+                    }, 0);
+                });
+                
+                item.addEventListener('dragend', function() {
+                    this.classList.remove('dragging');
+                    draggedItem = null;
+                    
+                    // Remove all drag-over classes
+                    document.querySelectorAll('.activity-item').forEach(item => {
+                        item.classList.remove('drag-over');
+                    });
+                });
+            });
+            
+            document.querySelectorAll('.timeline-activities').forEach(container => {
+                container.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    
+                    // Find the activity item being dragged over
+                    const afterElement = getDragAfterElement(this, e.clientY);
+                    const draggable = document.querySelector('.dragging');
+                    
+                    if (afterElement == null) {
+                        this.appendChild(draggable);
+                    } else {
+                        this.insertBefore(draggable, afterElement);
+                    }
+                    
+                    // Update data after reordering
+                    updateActivityOrder(container);
+                });
+                
+                container.addEventListener('dragenter', function(e) {
+                    e.preventDefault();
+                });
+            });
+            
+            function getDragAfterElement(container, y) {
+                const draggableElements = [...container.querySelectorAll('.activity-item:not(.dragging)')];
+                
+                return draggableElements.reduce((closest, child) => {
+                    const box = child.getBoundingClientRect();
+                    const offset = y - box.top - box.height / 2;
+                    
+                    if (offset < 0 && offset > closest.offset) {
+                        return { offset: offset, element: child };
+                    } else {
+                        return closest;
+                    }
+                }, { offset: Number.NEGATIVE_INFINITY }).element;
+            }
+        }
+        
+        // Update activity order after drag and drop
+        function updateActivityOrder(container) {
+            const dayElement = container.closest('.timeline-day');
+            const dayNumber = parseInt(dayElement.getAttribute('data-day'));
+            const day = tripData.days[dayNumber - 1];
+            
+            // Get new order of activity IDs
+            const activityElements = container.querySelectorAll('.activity-item');
+            const newOrder = Array.from(activityElements).map(el => parseInt(el.getAttribute('data-activity')));
+            
+            // Reorder activities array based on new order
+            const reorderedActivities = [];
+            newOrder.forEach(id => {
+                const activity = day.activities.find(a => a.id === id);
+                if (activity) reorderedActivities.push(activity);
+            });
+            
+            day.activities = reorderedActivities;
+        }
+    </script>
+</body>
+</html>
