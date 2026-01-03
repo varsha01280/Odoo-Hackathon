@@ -7,12 +7,121 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* Universal Header Styles */
+        .global-header {
+            background: linear-gradient(135deg, #4F46E5 0%, #818CF8 100%);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
 
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            transition: transform 0.3s ease;
+        }
+
+        .header-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .header-logo i {
+            font-size: 2rem;
+            color: white;
+        }
+
+        .header-logo span {
+            background: linear-gradient(to right, #ffffff, #e2e8f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+        }
+
+        .mobile-menu-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .header-btn {
+            padding: 10px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .btn-login {
+            background-color: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-login:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .btn-signup {
+            background-color: white;
+            color: #4F46E5;
+            border: 2px solid white;
+        }
+
+        .btn-signup:hover {
+            background-color: #f8fafc;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Main Page Styles */
         :root {
             --primary: #4F46E5;
             --primary-light: #818CF8;
@@ -35,6 +144,7 @@
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
             color: var(--text);
+            margin: 0;
         }
 
         .container {
@@ -43,8 +153,8 @@
             padding: 30px 20px;
         }
 
-        /* Header */
-        .header {
+        /* Trip Header */
+        .trip-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -85,7 +195,7 @@
             color: var(--primary-light);
         }
 
-        .header-actions {
+        .trip-actions {
             display: flex;
             gap: 15px;
             align-items: center;
@@ -125,6 +235,16 @@
         .btn-secondary:hover {
             background-color: #f1f5f9;
             border-color: var(--primary-light);
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #0da271;
+            transform: translateY(-2px);
         }
 
         /* View Toggle */
@@ -254,6 +374,9 @@
             background-color: #f8fafc;
             border-radius: var(--radius-sm);
             border-left: 4px solid var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .day-header h3 {
@@ -268,6 +391,26 @@
             display: flex;
             align-items: center;
             gap: 8px;
+        }
+
+        .day-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .day-action-btn {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .day-action-btn:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+            color: var(--primary);
         }
 
         .city-section {
@@ -391,6 +534,75 @@
             border-radius: 15px;
             font-size: 0.8rem;
             color: var(--text-light);
+        }
+
+        .activity-actions {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .activity-item:hover .activity-actions {
+            opacity: 1;
+        }
+
+        .activity-action-btn {
+            background: none;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .activity-edit-btn {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: var(--primary);
+        }
+
+        .activity-edit-btn:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .activity-delete-btn {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .activity-delete-btn:hover {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .add-activity-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #f8fafc;
+            border: 2px dashed var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text-light);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .add-activity-btn:hover {
+            background-color: rgba(79, 70, 229, 0.05);
+            border-color: var(--primary);
+            color: var(--primary);
         }
 
         /* Calendar View */
@@ -650,8 +862,107 @@
             line-height: 1.6;
         }
 
-        /* Activity Detail Modal */
-        .activity-modal {
+        /* Edit Form */
+        .edit-form {
+            background-color: var(--card);
+            border-radius: var(--radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .edit-form.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .form-header h2 {
+            font-size: 1.8rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-header h2 i {
+            color: var(--primary);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-label i {
+            color: var(--primary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+            background-color: #f8fafc;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+            background-color: white;
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid var(--border);
+        }
+
+        .form-actions .btn {
+            flex: 1;
+        }
+
+        /* Modal */
+        .modal {
             display: none;
             position: fixed;
             top: 0;
@@ -665,7 +976,7 @@
             padding: 20px;
         }
 
-        .activity-modal.active {
+        .modal.active {
             display: flex;
             animation: fadeIn 0.3s ease;
         }
@@ -673,81 +984,37 @@
         .modal-content {
             background-color: var(--card);
             border-radius: var(--radius);
-            max-width: 600px;
+            padding: 40px;
+            max-width: 500px;
             width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
             animation: slideUp 0.3s ease;
         }
 
         @keyframes slideUp {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 25px 30px;
-            border-bottom: 2px solid var(--border);
-            background: linear-gradient(to right, var(--primary), var(--primary-light));
-            color: white;
-            border-radius: var(--radius) var(--radius) 0 0;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .modal-header i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 15px;
         }
 
         .modal-header h3 {
-            font-size: 1.6rem;
-            color: white;
+            font-size: 1.8rem;
+            color: var(--text);
+            margin-bottom: 10px;
         }
 
-        .close-modal {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: white;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-
-        .close-modal:hover {
-            color: #f1f5f9;
-        }
-
-        .modal-body {
-            padding: 30px;
-        }
-
-        .modal-image {
-            border-radius: var(--radius-sm);
-            overflow: hidden;
-            height: 200px;
-            margin-bottom: 20px;
-        }
-
-        .modal-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .modal-details {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .modal-detail-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .modal-detail-item i {
-            color: var(--primary);
-            width: 20px;
+        .modal-header p {
+            color: var(--text-light);
         }
 
         .modal-actions {
@@ -756,9 +1023,84 @@
             margin-top: 30px;
         }
 
+        .modal-actions .btn {
+            flex: 1;
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--success);
+            color: white;
+            padding: 15px 25px;
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1001;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.error {
+            background-color: var(--danger);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
-            .header {
+            .header-nav {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: linear-gradient(135deg, #4F46E5 0%, #818CF8 100%);
+                flex-direction: column;
+                padding: 20px;
+                gap: 15px;
+                transform: translateY(-100%);
+                opacity: 0;
+                transition: all 0.3s ease;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .header-nav.active {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .auth-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .header-btn {
+                width: 100%;
+            }
+
+            .trip-header {
                 flex-direction: column;
                 text-align: center;
             }
@@ -767,7 +1109,7 @@
                 justify-content: center;
             }
             
-            .header-actions {
+            .trip-actions {
                 width: 100%;
                 justify-content: center;
             }
@@ -789,6 +1131,10 @@
                 height: 35px;
                 font-size: 1rem;
             }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 480px) {
@@ -796,8 +1142,8 @@
                 grid-template-columns: repeat(2, 1fr);
             }
             
-            .modal-details {
-                grid-template-columns: 1fr;
+            .form-actions {
+                flex-direction: column;
             }
         }
 
@@ -823,50 +1169,133 @@
             color: var(--text-light);
             font-size: 0.9rem;
         }
-
-        /* Print Styles */
-        .print-only {
-            display: none;
-        }
-
-        @media print {
-            .container {
-                padding: 0;
-            }
-            
-            .view-toggle,
-            .header-actions,
-            .btn {
-                display: none !important;
-            }
-            
-            .print-only {
-                display: block;
-            }
-            
-            .timeline-view {
-                display: block !important;
-                box-shadow: none;
-                border: 1px solid #ddd;
-            }
-        }
-
-        /* Drag and Drop */
-        .activity-item.dragging {
-            opacity: 0.5;
-            border: 2px dashed var(--primary);
-        }
-
-        .activity-item.over {
-            border: 2px dashed var(--secondary);
-            background-color: rgba(16, 185, 129, 0.1);
-        }
     </style>
 </head>
 <body>
+    <!-- Universal Header -->
+    <header class="global-header">
+        <div class="header-container">
+            <!-- Logo -->
+            <a href="dashboard.html" class="header-logo">
+                <i class="fas fa-globe-americas"></i>
+                <span>GlobeTrotter</span>
+            </a>
+
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <!-- Navigation -->
+            <nav class="header-nav" id="headerNav">
+                <div class="auth-buttons" id="authButtons">
+                    <a href="login.html" class="header-btn btn-login">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Login
+                    </a>
+                    <a href="signup.html" class="header-btn btn-signup">
+                        <i class="fas fa-user-plus"></i>
+                        Sign Up
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
     <div class="container">
-        <!-- Header -->
-        <div class="header">
+        <!-- Edit Form (Hidden by default) -->
+        <div class="edit-form" id="edit-form">
+            <div class="form-header">
+                <h2><i class="fas fa-edit"></i> Edit Activity</h2>
+                <button class="btn btn-secondary" id="cancel-edit">
+                    Cancel
+                </button>
+            </div>
+            <form id="activity-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label" for="edit-name">
+                            <i class="fas fa-pen"></i> Activity Name
+                        </label>
+                        <input type="text" id="edit-name" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="edit-category">
+                            <i class="fas fa-tag"></i> Category
+                        </label>
+                        <select id="edit-category" class="form-input">
+                            <option value="sightseeing">Sightseeing</option>
+                            <option value="food">Food & Dining</option>
+                            <option value="adventure">Adventure</option>
+                            <option value="culture">Culture</option>
+                            <option value="nature">Nature</option>
+                            <option value="shopping">Shopping</option>
+                            <option value="travel">Travel</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="edit-start-time">
+                            <i class="fas fa-clock"></i> Start Time
+                        </label>
+                        <input type="time" id="edit-start-time" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="edit-end-time">
+                            <i class="fas fa-clock"></i> End Time
+                        </label>
+                        <input type="time" id="edit-end-time" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="edit-cost">
+                            <i class="fas fa-wallet"></i> Cost ($)
+                        </label>
+                        <input type="number" id="edit-cost" class="form-input" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="edit-location">
+                            <i class="fas fa-map-marker-alt"></i> Location
+                        </label>
+                        <input type="text" id="edit-location" class="form-input" required>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label" for="edit-description">
+                            <i class="fas fa-align-left"></i> Description
+                        </label>
+                        <textarea id="edit-description" class="form-input form-textarea"></textarea>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label" for="edit-notes">
+                            <i class="fas fa-sticky-note"></i> Notes (Optional)
+                        </label>
+                        <textarea id="edit-notes" class="form-input form-textarea"></textarea>
+                    </div>
+                </div>
+
+                <input type="hidden" id="edit-activity-id">
+                <input type="hidden" id="edit-day-id">
+                <input type="hidden" id="edit-city-id">
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="delete-activity">
+                        Delete Activity
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="save-activity">
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Trip Header -->
+        <div class="trip-header">
             <div class="trip-info">
                 <div class="trip-title">
                     <h1>European Adventure 2024</h1>
@@ -893,19 +1322,19 @@
                     </div>
                     <div class="meta-item">
                         <i class="fas fa-list-check"></i>
-                        <span>15 Activities</span>
+                        <span id="activity-count">15 Activities</span>
                     </div>
                 </div>
             </div>
-            <div class="header-actions">
-                <button class="btn btn-secondary" id="edit-btn">
+            <div class="trip-actions">
+                <button class="btn btn-success" id="add-new-activity">
+                    <i class="fas fa-plus"></i> Add Activity
+                </button>
+                <button class="btn btn-secondary" id="edit-trip-btn">
                     <i class="fas fa-edit"></i> Edit Trip
                 </button>
                 <button class="btn btn-primary" id="share-btn">
                     <i class="fas fa-share"></i> Share
-                </button>
-                <button class="btn btn-secondary" id="print-btn">
-                    <i class="fas fa-print"></i> Print
                 </button>
             </div>
         </div>
@@ -918,9 +1347,6 @@
             <button class="view-option" data-view="calendar">
                 <i class="fas fa-calendar-alt"></i> Calendar View
             </button>
-            <button class="view-option" data-view="list">
-                <i class="fas fa-list"></i> List View
-            </button>
         </div>
 
         <!-- Timeline View -->
@@ -930,7 +1356,7 @@
                 <div class="trip-stats">
                     <span class="meta-item">
                         <i class="fas fa-clock"></i>
-                        <span>Total: 40 hours</span>
+                        <span id="total-duration">40h</span>
                     </span>
                 </div>
             </div>
@@ -966,7 +1392,7 @@
                 <h3><i class="fas fa-chart-pie"></i> Trip Summary</h3>
                 <span class="meta-item">
                     <i class="fas fa-clock"></i>
-                    <span id="total-duration">40h</span>
+                    <span id="total-duration-sidebar">40h</span>
                 </span>
             </div>
             
@@ -993,7 +1419,7 @@
                 <h4>Cost Breakdown</h4>
                 <div class="cost-item">
                     <span>Activities:</span>
-                    <span>$1,250</span>
+                    <span id="activities-cost">$1,250</span>
                 </div>
                 <div class="cost-item">
                     <span>Accommodation:</span>
@@ -1014,35 +1440,31 @@
             </div>
         </div>
 
-        <!-- Activity Detail Modal -->
-        <div class="activity-modal" id="activity-modal">
+        <!-- Delete Confirmation Modal -->
+        <div class="modal" id="delete-modal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 id="modal-title">Activity Details</h3>
-                    <button class="close-modal" id="close-modal">
-                        <i class="fas fa-times"></i>
-                    </button>
+                    <i class="fas fa-exclamation-triangle" style="color: var(--accent);"></i>
+                    <h3>Delete Activity</h3>
+                    <p>Are you sure you want to delete this activity? This action cannot be undone.</p>
                 </div>
-                <div class="modal-body" id="modal-body">
-                    <!-- Modal content will be dynamically loaded -->
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" id="cancel-delete">Cancel</button>
+                    <button class="btn btn-danger" id="confirm-delete">Delete</button>
                 </div>
             </div>
         </div>
 
-        <!-- Empty State -->
-        <div class="empty-state" id="empty-state" style="display: none;">
-            <i class="fas fa-calendar-plus"></i>
-            <h3>No itinerary planned yet</h3>
-            <p>Start planning your trip by adding cities and activities to your itinerary.</p>
-            <button class="btn btn-primary" id="start-planning">
-                <i class="fas fa-plus"></i> Start Planning
-            </button>
+        <!-- Toast Notification -->
+        <div class="toast" id="toast">
+            <i class="fas fa-check-circle"></i>
+            <span id="toast-message">Activity updated successfully!</span>
         </div>
     </div>
 
     <script>
         // Sample Itinerary Data
-        const itinerary = {
+        let itinerary = {
             id: 1,
             name: "European Adventure 2024",
             description: "Exploring the best of Europe - Paris, Rome, and Barcelona",
@@ -1147,172 +1569,13 @@
                             ]
                         }
                     ]
-                },
-                {
-                    day: 3,
-                    date: "2024-06-17",
-                    cities: [
-                        {
-                            id: 1,
-                            name: "Paris",
-                            country: "France",
-                            activities: [
-                                {
-                                    id: 107,
-                                    name: "Flight to Rome",
-                                    description: "Morning flight from Paris to Rome",
-                                    startTime: "08:00",
-                                    endTime: "10:30",
-                                    duration: 2.5,
-                                    cost: 120,
-                                    category: "travel",
-                                    location: "CDG to FCO",
-                                    notes: "Flight AF1204, includes checked baggage"
-                                }
-                            ]
-                        },
-                        {
-                            id: 2,
-                            name: "Rome",
-                            country: "Italy",
-                            activities: [
-                                {
-                                    id: 108,
-                                    name: "Colosseum Tour",
-                                    description: "Skip-the-line tour of ancient Roman amphitheater",
-                                    startTime: "14:00",
-                                    endTime: "16:00",
-                                    duration: 2,
-                                    cost: 55,
-                                    category: "sightseeing",
-                                    location: "Piazza del Colosseo",
-                                    notes: "Includes access to Roman Forum and Palatine Hill"
-                                },
-                                {
-                                    id: 109,
-                                    name: "Italian Cooking Class",
-                                    description: "Learn to make pasta and tiramisu with local chef",
-                                    startTime: "18:00",
-                                    endTime: "21:00",
-                                    duration: 3,
-                                    cost: 85,
-                                    category: "food",
-                                    location: "Trastevere District",
-                                    notes: "Includes market tour and wine tasting"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    day: 4,
-                    date: "2024-06-18",
-                    cities: [
-                        {
-                            id: 2,
-                            name: "Rome",
-                            country: "Italy",
-                            activities: [
-                                {
-                                    id: 110,
-                                    name: "Vatican City Tour",
-                                    description: "Visit St. Peter's Basilica and Sistine Chapel",
-                                    startTime: "09:00",
-                                    endTime: "13:00",
-                                    duration: 4,
-                                    cost: 75,
-                                    category: "culture",
-                                    location: "Vatican City",
-                                    notes: "Skip-the-line tickets, dress code applies"
-                                },
-                                {
-                                    id: 111,
-                                    name: "Trevi Fountain & Pantheon",
-                                    description: "Walking tour of historic landmarks",
-                                    startTime: "15:00",
-                                    endTime: "17:00",
-                                    duration: 2,
-                                    cost: 0,
-                                    category: "sightseeing",
-                                    location: "Historic Center",
-                                    notes: "Self-guided walking tour"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    day: 5,
-                    date: "2024-06-19",
-                    cities: [
-                        {
-                            id: 2,
-                            name: "Rome",
-                            country: "Italy",
-                            activities: [
-                                {
-                                    id: 112,
-                                    name: "Flight to Barcelona",
-                                    description: "Morning flight from Rome to Barcelona",
-                                    startTime: "09:00",
-                                    endTime: "11:00",
-                                    duration: 2,
-                                    cost: 95,
-                                    category: "travel",
-                                    location: "FCO to BCN",
-                                    notes: "Flight VY6202, includes cabin baggage"
-                                }
-                            ]
-                        },
-                        {
-                            id: 3,
-                            name: "Barcelona",
-                            country: "Spain",
-                            activities: [
-                                {
-                                    id: 113,
-                                    name: "Sagrada Familia",
-                                    description: "Guided tour of Gaudí's masterpiece",
-                                    startTime: "14:00",
-                                    endTime: "16:00",
-                                    duration: 2,
-                                    cost: 50,
-                                    category: "sightseeing",
-                                    location: "Carrer de Mallorca",
-                                    notes: "Includes tower access, audio guide available"
-                                },
-                                {
-                                    id: 114,
-                                    name: "Gothic Quarter Walk",
-                                    description: "Explore medieval streets and hidden plazas",
-                                    startTime: "17:00",
-                                    endTime: "19:00",
-                                    duration: 2,
-                                    cost: 0,
-                                    category: "sightseeing",
-                                    location: "Barri Gòtic",
-                                    notes: "Free walking tour available"
-                                },
-                                {
-                                    id: 115,
-                                    name: "Farewell Dinner",
-                                    description: "Traditional Catalan dinner at local restaurant",
-                                    startTime: "20:00",
-                                    endTime: "22:00",
-                                    duration: 2,
-                                    cost: 65,
-                                    category: "food",
-                                    location: "El Born District",
-                                    notes: "Reservation at Restaurant 7 Portes"
-                                }
-                            ]
-                        }
-                    ]
                 }
             ]
         };
 
         // DOM Elements
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const headerNav = document.getElementById('headerNav');
         const timelineView = document.getElementById('timeline-view');
         const calendarView = document.getElementById('calendar-view');
         const timelineDays = document.getElementById('timeline-days');
@@ -1321,26 +1584,50 @@
         const viewOptions = document.querySelectorAll('.view-option');
         const prevMonthBtn = document.getElementById('prev-month');
         const nextMonthBtn = document.getElementById('next-month');
-        const editBtn = document.getElementById('edit-btn');
+        const addNewActivityBtn = document.getElementById('add-new-activity');
+        const editTripBtn = document.getElementById('edit-trip-btn');
         const shareBtn = document.getElementById('share-btn');
-        const printBtn = document.getElementById('print-btn');
-        const activityModal = document.getElementById('activity-modal');
-        const closeModalBtn = document.getElementById('close-modal');
-        const startPlanningBtn = document.getElementById('start-planning');
-        const emptyState = document.getElementById('empty-state');
+        const editForm = document.getElementById('edit-form');
+        const cancelEditBtn = document.getElementById('cancel-edit');
+        const activityForm = document.getElementById('activity-form');
+        const deleteModal = document.getElementById('delete-modal');
+        const cancelDeleteBtn = document.getElementById('cancel-delete');
+        const confirmDeleteBtn = document.getElementById('confirm-delete');
+        const deleteActivityBtn = document.getElementById('delete-activity');
+        const saveActivityBtn = document.getElementById('save-activity');
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toast-message');
+
+        // Form elements
+        const editName = document.getElementById('edit-name');
+        const editCategory = document.getElementById('edit-category');
+        const editStartTime = document.getElementById('edit-start-time');
+        const editEndTime = document.getElementById('edit-end-time');
+        const editCost = document.getElementById('edit-cost');
+        const editLocation = document.getElementById('edit-location');
+        const editDescription = document.getElementById('edit-description');
+        const editNotes = document.getElementById('edit-notes');
+        const editActivityId = document.getElementById('edit-activity-id');
+        const editDayId = document.getElementById('edit-day-id');
+        const editCityId = document.getElementById('edit-city-id');
 
         // Summary elements
+        const activityCount = document.getElementById('activity-count');
         const totalActivitiesEl = document.getElementById('total-activities');
         const totalDaysEl = document.getElementById('total-days');
         const totalCitiesEl = document.getElementById('total-cities');
         const totalCostEl = document.getElementById('total-cost');
         const totalDurationEl = document.getElementById('total-duration');
+        const totalDurationSidebar = document.getElementById('total-duration-sidebar');
+        const activitiesCost = document.getElementById('activities-cost');
 
         // State variables
         let currentView = 'timeline';
         let currentDate = new Date(itinerary.startDate);
         let currentMonth = currentDate.getMonth();
         let currentYear = currentDate.getFullYear();
+        let isEditing = false;
+        let currentEditingActivity = null;
 
         // Initialize
         function init() {
@@ -1361,6 +1648,7 @@
             let totalCities = new Set();
             let totalDuration = 0;
             let totalCost = 0;
+            let activitiesCostTotal = 0;
             
             itinerary.days.forEach(day => {
                 day.cities.forEach(city => {
@@ -1370,16 +1658,20 @@
                     city.activities.forEach(activity => {
                         totalDuration += activity.duration;
                         totalCost += activity.cost;
+                        if (activity.cost) activitiesCostTotal += activity.cost;
                     });
                 });
             });
             
             // Update summary
+            activityCount.textContent = `${totalActivities} Activities`;
             totalActivitiesEl.textContent = totalActivities;
             totalDaysEl.textContent = itinerary.days.length;
             totalCitiesEl.textContent = totalCities.size;
             totalCostEl.textContent = `$${totalCost}`;
             totalDurationEl.textContent = `${totalDuration}h`;
+            totalDurationSidebar.textContent = `${totalDuration}h`;
+            activitiesCost.textContent = `$${activitiesCostTotal}`;
         }
 
         // Render timeline view
@@ -1387,13 +1679,18 @@
             timelineDays.innerHTML = '';
             
             if (itinerary.days.length === 0) {
-                emptyState.style.display = 'block';
-                timelineView.style.display = 'none';
-                calendarView.style.display = 'none';
+                timelineDays.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-calendar-plus"></i>
+                        <h3>No itinerary planned yet</h3>
+                        <p>Start planning your trip by adding activities below.</p>
+                        <button class="btn btn-primary" id="start-planning">
+                            <i class="fas fa-plus"></i> Add First Activity
+                        </button>
+                    </div>
+                `;
                 return;
             }
-            
-            emptyState.style.display = 'none';
             
             itinerary.days.forEach(day => {
                 const dayEl = document.createElement('div');
@@ -1418,10 +1715,17 @@
                 });
                 
                 dayHeader.innerHTML = `
-                    <h3>Day ${day.day}: ${formattedDate}</h3>
-                    <div class="day-date">
-                        <i class="fas fa-calendar-day"></i>
-                        <span>${getDayProgress(day)}</span>
+                    <div>
+                        <h3>Day ${day.day}: ${formattedDate}</h3>
+                        <div class="day-date">
+                            <i class="fas fa-calendar-day"></i>
+                            <span>${getDayProgress(day)}</span>
+                        </div>
+                    </div>
+                    <div class="day-actions">
+                        <button class="day-action-btn" data-action="add-city" data-day="${day.day}">
+                            <i class="fas fa-plus"></i> Add City
+                        </button>
                     </div>
                 `;
                 
@@ -1450,19 +1754,22 @@
                                 <span>$${cityCost}</span>
                             </div>
                         </div>
-                        <div class="activities-list" data-city="${city.id}">
+                        <div class="activities-list" data-city="${city.id}" data-day="${day.day}">
                             <!-- Activities will be added here -->
                         </div>
+                        <button class="add-activity-btn" data-day="${day.day}" data-city="${city.id}">
+                            <i class="fas fa-plus"></i> Add Activity
+                        </button>
                     `;
                     
                     const activitiesList = citySection.querySelector('.activities-list');
+                    const addActivityBtn = citySection.querySelector('.add-activity-btn');
                     
                     // Add activities
                     city.activities.forEach(activity => {
                         const activityItem = document.createElement('div');
                         activityItem.className = 'activity-item';
                         activityItem.setAttribute('data-id', activity.id);
-                        activityItem.setAttribute('draggable', 'true');
                         
                         const timeRange = `${activity.startTime} - ${activity.endTime}`;
                         
@@ -1493,12 +1800,31 @@
                             </div>
                             <p class="activity-desc">${activity.description}</p>
                             ${activity.notes ? `<div class="activity-tags"><span class="activity-tag">${activity.notes}</span></div>` : ''}
+                            <div class="activity-actions">
+                                <button class="activity-action-btn activity-edit-btn" data-id="${activity.id}">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="activity-action-btn activity-delete-btn" data-id="${activity.id}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
                         `;
                         
                         activitiesList.appendChild(activityItem);
                     });
                     
+                    // Add activity button event
+                    addActivityBtn.addEventListener('click', () => {
+                        openAddActivityForm(day.day, city.id);
+                    });
+                    
                     dayEl.appendChild(citySection);
+                });
+                
+                // Add city button event
+                const addCityBtn = dayHeader.querySelector('[data-action="add-city"]');
+                addCityBtn.addEventListener('click', () => {
+                    addNewCity(day.day);
                 });
                 
                 timelineDays.appendChild(dayEl);
@@ -1506,6 +1832,231 @@
             
             // Attach event listeners to activity items
             attachActivityListeners();
+        }
+
+        // Open add activity form
+        function openAddActivityForm(dayId, cityId) {
+            isEditing = false;
+            currentEditingActivity = null;
+            
+            // Reset form
+            activityForm.reset();
+            editActivityId.value = '';
+            editDayId.value = dayId;
+            editCityId.value = cityId;
+            
+            // Set form title
+            const formHeader = editForm.querySelector('.form-header h2');
+            formHeader.innerHTML = '<i class="fas fa-plus"></i> Add New Activity';
+            
+            // Update button text
+            saveActivityBtn.innerHTML = '<i class="fas fa-plus"></i> Add Activity';
+            deleteActivityBtn.style.display = 'none';
+            
+            // Show form
+            editForm.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Open edit activity form
+        function openEditActivityForm(activityId) {
+            // Find activity
+            let activity = null;
+            let dayId = null;
+            let cityId = null;
+            
+            for (const day of itinerary.days) {
+                for (const city of day.cities) {
+                    const foundActivity = city.activities.find(a => a.id === activityId);
+                    if (foundActivity) {
+                        activity = foundActivity;
+                        dayId = day.day;
+                        cityId = city.id;
+                        break;
+                    }
+                }
+                if (activity) break;
+            }
+            
+            if (!activity) return;
+            
+            isEditing = true;
+            currentEditingActivity = activityId;
+            
+            // Fill form
+            editName.value = activity.name;
+            editCategory.value = activity.category;
+            editStartTime.value = activity.startTime;
+            editEndTime.value = activity.endTime;
+            editCost.value = activity.cost;
+            editLocation.value = activity.location;
+            editDescription.value = activity.description;
+            editNotes.value = activity.notes || '';
+            editActivityId.value = activityId;
+            editDayId.value = dayId;
+            editCityId.value = cityId;
+            
+            // Set form title
+            const formHeader = editForm.querySelector('.form-header h2');
+            formHeader.innerHTML = '<i class="fas fa-edit"></i> Edit Activity';
+            
+            // Update button text
+            saveActivityBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+            deleteActivityBtn.style.display = 'block';
+            
+            // Show form
+            editForm.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Save activity
+        function saveActivity() {
+            // Get form values
+            const activityData = {
+                id: isEditing ? parseInt(editActivityId.value) : Date.now(),
+                name: editName.value.trim(),
+                category: editCategory.value,
+                startTime: editStartTime.value,
+                endTime: editEndTime.value,
+                cost: parseInt(editCost.value) || 0,
+                location: editLocation.value.trim(),
+                description: editDescription.value.trim(),
+                notes: editNotes.value.trim(),
+                duration: calculateDuration(editStartTime.value, editEndTime.value)
+            };
+            
+            if (!activityData.name || !editStartTime.value || !editEndTime.value) {
+                showToast('Please fill in all required fields', 'error');
+                return;
+            }
+            
+            const dayId = parseInt(editDayId.value);
+            const cityId = parseInt(editCityId.value);
+            
+            // Find day and city
+            const day = itinerary.days.find(d => d.day === dayId);
+            const city = day?.cities.find(c => c.id === cityId);
+            
+            if (!day || !city) {
+                showToast('Error: Could not find day or city', 'error');
+                return;
+            }
+            
+            if (isEditing) {
+                // Update existing activity
+                const index = city.activities.findIndex(a => a.id === currentEditingActivity);
+                if (index !== -1) {
+                    city.activities[index] = activityData;
+                    showToast('Activity updated successfully!');
+                }
+            } else {
+                // Add new activity
+                city.activities.push(activityData);
+                showToast('Activity added successfully!');
+            }
+            
+            // Close form and refresh
+            editForm.classList.remove('active');
+            calculateTotals();
+            renderTimelineView();
+            renderCalendarView();
+        }
+
+        // Delete activity
+        function deleteActivity() {
+            const activityId = currentEditingActivity;
+            
+            // Find and remove activity
+            for (const day of itinerary.days) {
+                for (const city of day.cities) {
+                    const index = city.activities.findIndex(a => a.id === activityId);
+                    if (index !== -1) {
+                        city.activities.splice(index, 1);
+                        
+                        // Close form and refresh
+                        editForm.classList.remove('active');
+                        deleteModal.classList.remove('active');
+                        
+                        calculateTotals();
+                        renderTimelineView();
+                        renderCalendarView();
+                        
+                        showToast('Activity deleted successfully!');
+                        return;
+                    }
+                }
+            }
+        }
+
+        // Add new city
+        function addNewCity(dayId) {
+            const day = itinerary.days.find(d => d.day === dayId);
+            if (!day) return;
+            
+            const cityId = Date.now();
+            const newCity = {
+                id: cityId,
+                name: "New City",
+                country: "Country",
+                activities: []
+            };
+            
+            day.cities.push(newCity);
+            renderTimelineView();
+            showToast('New city added. Click to edit the city name.');
+        }
+
+        // Calculate duration from time strings
+        function calculateDuration(startTime, endTime) {
+            const [startHours, startMinutes] = startTime.split(':').map(Number);
+            const [endHours, endMinutes] = endTime.split(':').map(Number);
+            
+            const startTotal = startHours * 60 + startMinutes;
+            const endTotal = endHours * 60 + endMinutes;
+            
+            return (endTotal - startTotal) / 60; // Return in hours
+        }
+
+        // Get day progress text
+        function getDayProgress(day) {
+            const totalActivities = day.cities.reduce((sum, city) => sum + city.activities.length, 0);
+            if (totalActivities === 0) return 'No activities planned';
+            
+            const travelActivities = day.cities.reduce((sum, city) => 
+                sum + city.activities.filter(a => a.category === 'travel').length, 0);
+            const sightseeingActivities = day.cities.reduce((sum, city) => 
+                sum + city.activities.filter(a => a.category === 'sightseeing').length, 0);
+            
+            let parts = [];
+            if (travelActivities > 0) parts.push(`${travelActivities} travel`);
+            if (sightseeingActivities > 0) parts.push(`${sightseeingActivities} sightseeing`);
+            
+            const remaining = totalActivities - travelActivities - sightseeingActivities;
+            if (remaining > 0) parts.push(`${remaining} other`);
+            
+            return parts.join(', ');
+        }
+
+        // Attach event listeners to activities
+        function attachActivityListeners() {
+            // Edit buttons
+            document.querySelectorAll('.activity-edit-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const activityId = parseInt(btn.getAttribute('data-id'));
+                    openEditActivityForm(activityId);
+                });
+            });
+            
+            // Delete buttons
+            document.querySelectorAll('.activity-delete-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const activityId = parseInt(btn.getAttribute('data-id'));
+                    currentEditingActivity = activityId;
+                    deleteModal.classList.add('active');
+                });
+            });
         }
 
         // Render calendar view
@@ -1595,14 +2146,6 @@
                     </div>
                 `;
                 
-                // Add click event to show day details
-                if (isTripDay) {
-                    dayEl.style.cursor = 'pointer';
-                    dayEl.addEventListener('click', () => {
-                        showDayDetails(day);
-                    });
-                }
-                
                 calendarGrid.appendChild(dayEl);
             }
             
@@ -1610,51 +2153,6 @@
             const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
                                'July', 'August', 'September', 'October', 'November', 'December'];
             currentMonthEl.textContent = `${monthNames[currentMonth]} ${currentYear}`;
-        }
-
-        // Show day details
-        function showDayDetails(day) {
-            const dayData = itinerary.days.find(d => {
-                const date = new Date(d.date);
-                return date.getDate() === day && 
-                       date.getMonth() === currentMonth && 
-                       date.getFullYear() === currentYear;
-            });
-            
-            if (dayData) {
-                // Switch to timeline view and scroll to day
-                switchView('timeline');
-                
-                // Find and highlight the day
-                const dayElement = document.querySelector(`[data-day="${dayData.day}"]`);
-                if (dayElement) {
-                    dayElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    
-                    // Add highlight animation
-                    dayElement.style.backgroundColor = 'rgba(79, 70, 229, 0.05)';
-                    setTimeout(() => {
-                        dayElement.style.backgroundColor = '';
-                    }, 2000);
-                }
-            }
-        }
-
-        // Get day progress text
-        function getDayProgress(day) {
-            const totalActivities = day.cities.reduce((sum, city) => sum + city.activities.length, 0);
-            const travelActivities = day.cities.reduce((sum, city) => 
-                sum + city.activities.filter(a => a.category === 'travel').length, 0);
-            const sightseeingActivities = day.cities.reduce((sum, city) => 
-                sum + city.activities.filter(a => a.category === 'sightseeing').length, 0);
-            
-            let parts = [];
-            if (travelActivities > 0) parts.push(`${travelActivities} travel`);
-            if (sightseeingActivities > 0) parts.push(`${sightseeingActivities} sightseeing`);
-            
-            const remaining = totalActivities - travelActivities - sightseeingActivities;
-            if (remaining > 0) parts.push(`${remaining} other`);
-            
-            return parts.join(', ');
         }
 
         // Switch between views
@@ -1677,170 +2175,37 @@
                 timelineView.classList.add('active');
             } else if (view === 'calendar') {
                 calendarView.classList.add('active');
-            } else if (view === 'list') {
-                // For list view, we can reuse timeline but with different styling
-                timelineView.classList.add('active');
-                // Add list view specific classes
-                timelineView.classList.add('list-view');
             }
         }
 
-        // Show activity details modal
-        function showActivityDetails(activityId) {
-            // Find activity
-            let activity = null;
-            let cityName = '';
+        // Show toast notification
+        function showToast(message, type = 'success') {
+            toastMessage.textContent = message;
+            toast.className = `toast ${type} show`;
             
-            for (const day of itinerary.days) {
-                for (const city of day.cities) {
-                    const foundActivity = city.activities.find(a => a.id === activityId);
-                    if (foundActivity) {
-                        activity = foundActivity;
-                        cityName = city.name;
-                        break;
-                    }
-                }
-                if (activity) break;
-            }
-            
-            if (!activity) return;
-            
-            // Populate modal
-            document.getElementById('modal-title').textContent = activity.name;
-            
-            const modalBody = document.getElementById('modal-body');
-            modalBody.innerHTML = `
-                <div class="modal-image">
-                    <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="${activity.name}">
-                </div>
-                <div class="modal-details">
-                    <div class="modal-detail-item">
-                        <i class="fas fa-clock"></i>
-                        <span><strong>Time:</strong> ${activity.startTime} - ${activity.endTime}</span>
-                    </div>
-                    <div class="modal-detail-item">
-                        <i class="fas fa-hourglass"></i>
-                        <span><strong>Duration:</strong> ${activity.duration} hours</span>
-                    </div>
-                    <div class="modal-detail-item">
-                        <i class="fas fa-wallet"></i>
-                        <span><strong>Cost:</strong> $${activity.cost}</span>
-                    </div>
-                    <div class="modal-detail-item">
-                        <i class="fas fa-tag"></i>
-                        <span><strong>Category:</strong> ${activity.category}</span>
-                    </div>
-                    <div class="modal-detail-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span><strong>Location:</strong> ${activity.location}</span>
-                    </div>
-                    <div class="modal-detail-item">
-                        <i class="fas fa-city"></i>
-                        <span><strong>City:</strong> ${cityName}</span>
-                    </div>
-                </div>
-                <div class="modal-description">
-                    <h4>Description</h4>
-                    <p>${activity.description}</p>
-                    ${activity.notes ? `
-                        <h4 style="margin-top: 20px;">Notes</h4>
-                        <p>${activity.notes}</p>
-                    ` : ''}
-                </div>
-                <div class="modal-actions">
-                    <button class="btn btn-secondary" id="modal-close">
-                        Close
-                    </button>
-                    <button class="btn btn-primary" id="modal-edit">
-                        <i class="fas fa-edit"></i> Edit Activity
-                    </button>
-                </div>
-            `;
-            
-            // Show modal
-            activityModal.classList.add('active');
-            
-            // Attach modal button listeners
-            document.getElementById('modal-close').addEventListener('click', closeActivityModal);
-            document.getElementById('modal-edit').addEventListener('click', () => {
-                closeActivityModal();
-                editActivity(activityId);
-            });
-        }
-
-        // Close activity modal
-        function closeActivityModal() {
-            activityModal.classList.remove('active');
-        }
-
-        // Edit activity
-        function editActivity(activityId) {
-            alert(`In a real app, this would open an editor for activity ${activityId}`);
-        }
-
-        // Attach event listeners to activities
-        function attachActivityListeners() {
-            document.querySelectorAll('.activity-item').forEach(item => {
-                // Click to view details
-                item.addEventListener('click', (e) => {
-                    if (!e.target.closest('.activity-actions')) {
-                        const activityId = parseInt(item.getAttribute('data-id'));
-                        showActivityDetails(activityId);
-                    }
-                });
-                
-                // Drag and drop
-                item.addEventListener('dragstart', handleDragStart);
-                item.addEventListener('dragover', handleDragOver);
-                item.addEventListener('dragleave', handleDragLeave);
-                item.addEventListener('drop', handleDrop);
-                item.addEventListener('dragend', handleDragEnd);
-            });
-        }
-
-        // Drag and drop functions
-        let draggedItem = null;
-
-        function handleDragStart(e) {
-            draggedItem = this;
-            this.classList.add('dragging');
-            e.dataTransfer.effectAllowed = 'move';
-            e.dataTransfer.setData('text/plain', this.getAttribute('data-id'));
-        }
-
-        function handleDragOver(e) {
-            e.preventDefault();
-            this.classList.add('over');
-            return false;
-        }
-
-        function handleDragLeave() {
-            this.classList.remove('over');
-        }
-
-        function handleDrop(e) {
-            e.stopPropagation();
-            e.preventDefault();
-            
-            if (draggedItem !== this) {
-                // In a real app, this would update the itinerary order
-                alert('Activity order updated!');
-            }
-            
-            this.classList.remove('over');
-            return false;
-        }
-
-        function handleDragEnd() {
-            this.classList.remove('dragging');
-            document.querySelectorAll('.activity-item').forEach(item => {
-                item.classList.remove('over');
-            });
-            draggedItem = null;
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
         }
 
         // Set up event listeners
         function setupEventListeners() {
+            // Header mobile menu
+            mobileMenuBtn.addEventListener('click', () => {
+                headerNav.classList.toggle('active');
+                mobileMenuBtn.innerHTML = headerNav.classList.contains('active') 
+                    ? '<i class="fas fa-times"></i>' 
+                    : '<i class="fas fa-bars"></i>';
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!headerNav.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                    headerNav.classList.remove('active');
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                }
+            });
+
             // View toggle
             viewOptions.forEach(option => {
                 option.addEventListener('click', function() {
@@ -1868,36 +2233,64 @@
                 renderCalendarView();
             });
             
-            // Header buttons
-            editBtn.addEventListener('click', () => {
-                alert('In a real app, this would open the trip editor');
-            });
-            
-            shareBtn.addEventListener('click', () => {
-                alert('In a real app, this would open the share dialog');
-            });
-            
-            printBtn.addEventListener('click', () => {
-                window.print();
-            });
-            
-            // Modal
-            closeModalBtn.addEventListener('click', closeActivityModal);
-            activityModal.addEventListener('click', (e) => {
-                if (e.target === activityModal) {
-                    closeActivityModal();
+            // Add new activity button
+            addNewActivityBtn.addEventListener('click', () => {
+                // Add to first day, first city by default
+                if (itinerary.days.length > 0) {
+                    const day = itinerary.days[0];
+                    const city = day.cities[0];
+                    openAddActivityForm(day.day, city.id);
                 }
             });
             
-            // Start planning
-            startPlanningBtn.addEventListener('click', () => {
-                alert('In a real app, this would open the itinerary builder');
+            // Edit trip button
+            editTripBtn.addEventListener('click', () => {
+                alert('In a real app, this would open trip settings');
             });
             
-            // Keyboard shortcuts
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    closeActivityModal();
+            // Share button
+            shareBtn.addEventListener('click', () => {
+                alert('In a real app, this would open sharing options');
+            });
+            
+            // Cancel edit
+            cancelEditBtn.addEventListener('click', () => {
+                editForm.classList.remove('active');
+            });
+            
+            // Save activity form
+            activityForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                saveActivity();
+            });
+            
+            // Delete activity button
+            deleteActivityBtn.addEventListener('click', () => {
+                deleteModal.classList.add('active');
+            });
+            
+            // Cancel delete
+            cancelDeleteBtn.addEventListener('click', () => {
+                deleteModal.classList.remove('active');
+            });
+            
+            // Confirm delete
+            confirmDeleteBtn.addEventListener('click', () => {
+                deleteActivity();
+            });
+            
+            // Close modal when clicking outside
+            deleteModal.addEventListener('click', (e) => {
+                if (e.target === deleteModal) {
+                    deleteModal.classList.remove('active');
+                }
+            });
+            
+            // Close mobile menu on window resize
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768) {
+                    headerNav.classList.remove('active');
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
                 }
             });
         }
