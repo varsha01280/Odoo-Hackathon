@@ -42,7 +42,7 @@
             min-height: 100vh;
         }
 
-        /* === SIDEBAR (Same as Dashboard) === */
+        /* === SIDEBAR === */
         .sidebar {
             width: 250px;
             background: linear-gradient(180deg, var(--sidebar-bg) 0%, #0d1440 100%);
@@ -319,70 +319,95 @@
             border-bottom: 1px solid var(--gray-light);
         }
 
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--dark);
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.9rem 1rem;
+        /* Privacy Settings Specific Styles */
+        .privacy-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
             border: 1px solid var(--gray-light);
-            border-radius: 8px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
             transition: var(--transition);
         }
 
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
+        .privacy-option:hover {
+            border-color: var(--primary-light);
+            background-color: rgba(25, 118, 210, 0.02);
+        }
+
+        .privacy-info h4 {
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .privacy-info p {
+            color: var(--gray);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: var(--success);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(30px);
+        }
+
+        /* Select Styles for Privacy */
+        .privacy-select {
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--gray-light);
+            border-radius: 8px;
+            background: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            min-width: 200px;
+            transition: var(--transition);
+        }
+
+        .privacy-select:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-        }
-
-        /* Form Sections */
-        .form-section {
-            margin-bottom: 3rem;
-            padding-bottom: 2rem;
-            border-bottom: 1px solid var(--gray-light);
-        }
-
-        .form-section:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-
-        /* Checkbox and Radio Groups */
-        .checkbox-group,
-        .radio-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-top: 0.5rem;
-        }
-
-        .checkbox-item,
-        .radio-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
         }
 
         /* Button Styles */
@@ -443,125 +468,49 @@
             margin-top: 2rem;
         }
 
-        /* Notification Preferences */
-        .preference-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem;
-            background: var(--gray-light);
-            border-radius: 8px;
-            margin-bottom: 1rem;
+        /* Form Groups */
+        .form-group {
+            margin-bottom: 1.5rem;
         }
 
-        .preference-info h4 {
-            font-size: 1rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .preference-info p {
-            color: var(--gray);
-            font-size: 0.9rem;
-        }
-
-        .toggle-switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 30px;
-        }
-
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .toggle-slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 34px;
-        }
-
-        .toggle-slider:before {
-            position: absolute;
-            content: "";
-            height: 22px;
-            width: 22px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-
-        input:checked + .toggle-slider {
-            background-color: var(--success);
-        }
-
-        input:checked + .toggle-slider:before {
-            transform: translateX(30px);
-        }
-
-        /* Travel Preferences */
-        .tag-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.8rem;
-            margin-top: 1rem;
-        }
-
-        .tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: var(--gray-light);
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
             color: var(--dark);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            cursor: pointer;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 1px solid var(--gray-light);
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
             transition: var(--transition);
         }
 
-        .tag:hover {
-            background: var(--primary-light);
-            color: white;
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
         }
 
-        .tag.active {
-            background: var(--primary);
-            color: white;
+        /* Form Sections */
+        .form-section {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--gray-light);
         }
 
-        .tag i {
-            font-size: 0.8rem;
-        }
-
-        /* Privacy Settings */
-        .privacy-option {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.2rem;
-            border: 1px solid var(--gray-light);
-            border-radius: 8px;
-            margin-bottom: 1rem;
-        }
-
-        .privacy-info h4 {
-            margin-bottom: 0.3rem;
-        }
-
-        .privacy-info p {
-            color: var(--gray);
-            font-size: 0.9rem;
+        .form-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
         }
 
         /* Danger Zone */
@@ -581,6 +530,51 @@
         .danger-zone p {
             color: var(--gray);
             margin-bottom: 1.5rem;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            color: var(--danger);
+        }
+
+        /* Modal specific styles */
+        .modal h2 {
+            margin-bottom: 1.5rem;
+            color: var(--dark);
         }
 
         /* Responsive Design */
@@ -646,8 +640,14 @@
                 grid-column: span 1;
             }
             
-            .form-row {
-                grid-template-columns: 1fr;
+            .privacy-option {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .privacy-select {
+                width: 100%;
             }
             
             .header {
@@ -681,11 +681,11 @@
                 <i class="fas fa-home"></i>
                 <span>Dashboard</span>
             </a>
-            <a href="my-trip.html" class="menu-item">
+            <a href="my-trips.html" class="menu-item">
                 <i class="fas fa-suitcase"></i>
                 <span>My Trips</span>
             </a>
-            <a href="TripScreen.html" class="menu-item">
+            <a href="trip-planner.html" class="menu-item">
                 <i class="fas fa-calendar-alt"></i>
                 <span>Plan New Trip</span>
             </a>
@@ -701,7 +701,7 @@
                 <i class="fas fa-share-alt"></i>
                 <span>Shared Trips</span>
             </a>
-            <a href="profile.html" class="menu-item active">
+            <a href="#" class="menu-item active">
                 <i class="fas fa-user-cog"></i>
                 <span>Profile Settings</span>
             </a>
@@ -742,29 +742,28 @@
                 </div>
                 
                 <ul class="profile-menu">
-                    <li><a href="#personal-info" class="active"><i class="fas fa-user"></i> Personal Information</a></li>
-                    <li><a href="#account-security"><i class="fas fa-shield-alt"></i> Account & Security</a></li>
-                    <li><a href="#notification"><i class="fas fa-bell"></i> Notifications</a></li>
-                    <li><a href="#preferences"><i class="fas fa-heart"></i> Travel Preferences</a></li>
-                    <li><a href="#privacy"><i class="fas fa-lock"></i> Privacy Settings</a></li>
+                    <li><a href="#" data-section="personal-info"><i class="fas fa-user"></i> Personal Information</a></li>
+                    <li><a href="#" data-section="account-security"><i class="fas fa-shield-alt"></i> Account & Security</a></li>
+                    <li><a href="#" data-section="notification"><i class="fas fa-bell"></i> Notifications</a></li>
+                    <li><a href="#" data-section="preferences"><i class="fas fa-heart"></i> Travel Preferences</a></li>
+                    <li><a href="#" data-section="privacy" class="active"><i class="fas fa-lock"></i> Privacy Settings</a></li>
                 </ul>
             </div>
 
             <!-- Profile Content -->
             <div class="profile-content">
                 <!-- Personal Information Section -->
-                <div id="personal-info" class="form-section">
+                <div id="personal-info" class="form-section" style="display: none;">
                     <h2 class="section-title">Personal Information</h2>
                     
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="firstName">First Name</label>
-                            <input type="text" id="firstName" value="John">
-                        </div>
-                        <div class="form-group">
-                            <label for="lastName">Last Name</label>
-                            <input type="text" id="lastName" value="Doe">
-                        </div>
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" value="John">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" value="Doe">
                     </div>
                     
                     <div class="form-group">
@@ -772,15 +771,14 @@
                         <input type="email" id="email" value="john.doe@example.com">
                     </div>
                     
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="phone">Phone Number</label>
-                            <input type="tel" id="phone" value="+1 (555) 123-4567">
-                        </div>
-                        <div class="form-group">
-                            <label for="birthdate">Date of Birth</label>
-                            <input type="date" id="birthdate" value="1990-05-15">
-                        </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" value="+1 (555) 123-4567">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="birthdate">Date of Birth</label>
+                        <input type="date" id="birthdate" value="1990-05-15">
                     </div>
                     
                     <div class="form-group">
@@ -807,29 +805,25 @@
                         <input type="password" id="currentPassword" placeholder="Enter current password">
                     </div>
                     
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="newPassword">New Password</label>
-                            <input type="password" id="newPassword" placeholder="Enter new password">
-                        </div>
-                        <div class="form-group">
-                            <label for="confirmPassword">Confirm New Password</label>
-                            <input type="password" id="confirmPassword" placeholder="Confirm new password">
-                        </div>
+                    <div class="form-group">
+                        <label for="newPassword">New Password</label>
+                        <input type="password" id="newPassword" placeholder="Enter new password">
                     </div>
                     
                     <div class="form-group">
-                        <label>Two-Factor Authentication</label>
-                        <div class="preference-item">
-                            <div class="preference-info">
-                                <h4>Enable 2FA</h4>
-                                <p>Add an extra layer of security to your account</p>
-                            </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="twoFactorToggle">
-                                <span class="toggle-slider"></span>
-                            </label>
+                        <label for="confirmPassword">Confirm New Password</label>
+                        <input type="password" id="confirmPassword" placeholder="Confirm new password">
+                    </div>
+                    
+                    <div class="privacy-option">
+                        <div class="privacy-info">
+                            <h4>Two-Factor Authentication</h4>
+                            <p>Add an extra layer of security to your account</p>
                         </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="twoFactorToggle">
+                            <span class="toggle-slider"></span>
+                        </label>
                     </div>
                     
                     <div class="button-group">
@@ -843,8 +837,8 @@
                 <div id="notification" class="form-section" style="display: none;">
                     <h2 class="section-title">Notification Preferences</h2>
                     
-                    <div class="preference-item">
-                        <div class="preference-info">
+                    <div class="privacy-option">
+                        <div class="privacy-info">
                             <h4>Email Notifications</h4>
                             <p>Receive trip updates, reminders, and newsletters</p>
                         </div>
@@ -854,8 +848,8 @@
                         </label>
                     </div>
                     
-                    <div class="preference-item">
-                        <div class="preference-info">
+                    <div class="privacy-option">
+                        <div class="privacy-info">
                             <h4>Push Notifications</h4>
                             <p>Get real-time alerts on your devices</p>
                         </div>
@@ -865,8 +859,8 @@
                         </label>
                     </div>
                     
-                    <div class="preference-item">
-                        <div class="preference-info">
+                    <div class="privacy-option">
+                        <div class="privacy-info">
                             <h4>Trip Reminders</h4>
                             <p>Reminders for upcoming trips and activities</p>
                         </div>
@@ -876,8 +870,8 @@
                         </label>
                     </div>
                     
-                    <div class="preference-item">
-                        <div class="preference-info">
+                    <div class="privacy-option">
+                        <div class="privacy-info">
                             <h4>Budget Alerts</h4>
                             <p>Notifications when approaching budget limits</p>
                         </div>
@@ -887,8 +881,8 @@
                         </label>
                     </div>
                     
-                    <div class="preference-item">
-                        <div class="preference-info">
+                    <div class="privacy-option">
+                        <div class="privacy-info">
                             <h4>Promotional Offers</h4>
                             <p>Receive deals and discounts from partners</p>
                         </div>
@@ -941,20 +935,20 @@
                     
                     <div class="form-group">
                         <label>Accommodation Type</label>
-                        <div class="radio-group">
-                            <label class="radio-item">
+                        <div class="checkbox-group">
+                            <label class="checkbox-item">
                                 <input type="radio" name="accommodation" value="hotel" checked>
                                 <span>Hotel</span>
                             </label>
-                            <label class="radio-item">
+                            <label class="checkbox-item">
                                 <input type="radio" name="accommodation" value="airbnb">
                                 <span>Airbnb/Villa</span>
                             </label>
-                            <label class="radio-item">
+                            <label class="checkbox-item">
                                 <input type="radio" name="accommodation" value="hostel">
                                 <span>Hostel</span>
                             </label>
-                            <label class="radio-item">
+                            <label class="checkbox-item">
                                 <input type="radio" name="accommodation" value="camping">
                                 <span>Camping</span>
                             </label>
@@ -1013,25 +1007,28 @@
                 </div>
 
                 <!-- Privacy Settings -->
-                <div id="privacy" class="form-section" style="display: none;">
+                <div id="privacy" class="form-section">
                     <h2 class="section-title">Privacy Settings</h2>
+                    <p style="color: var(--gray); margin-bottom: 2rem;">Control who can see your information and how your data is used</p>
                     
+                    <!-- Profile Visibility -->
                     <div class="privacy-option">
                         <div class="privacy-info">
                             <h4>Profile Visibility</h4>
-                            <p>Who can see your profile and trips</p>
+                            <p>Choose who can see your profile information and travel history</p>
                         </div>
-                        <select id="profileVisibility">
-                            <option value="public">Public</option>
-                            <option value="friends">Friends Only</option>
-                            <option value="private">Private</option>
+                        <select class="privacy-select" id="profileVisibility">
+                            <option value="public">Public - Anyone can view</option>
+                            <option value="friends">Friends Only - Only your connections</option>
+                            <option value="private">Private - Only you</option>
                         </select>
                     </div>
                     
+                    <!-- Trip Sharing -->
                     <div class="privacy-option">
                         <div class="privacy-info">
                             <h4>Trip Sharing</h4>
-                            <p>Allow others to view and copy your trips</p>
+                            <p>Allow other users to view and copy your travel itineraries</p>
                         </div>
                         <label class="toggle-switch">
                             <input type="checkbox" id="tripSharing" checked>
@@ -1039,6 +1036,7 @@
                         </label>
                     </div>
                     
+                    <!-- Activity Tracking -->
                     <div class="privacy-option">
                         <div class="privacy-info">
                             <h4>Activity Tracking</h4>
@@ -1050,19 +1048,107 @@
                         </label>
                     </div>
                     
+                    <!-- Location Sharing -->
+                    <div class="privacy-option">
+                        <div class="privacy-info">
+                            <h4>Location Sharing</h4>
+                            <p>Share your current location with travel companions during trips</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="locationSharing">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <!-- Email Visibility -->
+                    <div class="privacy-option">
+                        <div class="privacy-info">
+                            <h4>Email Visibility</h4>
+                            <p>Show your email address to other users</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="emailVisibility">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <!-- Search Engine Indexing -->
+                    <div class="privacy-option">
+                        <div class="privacy-info">
+                            <h4>Search Engine Indexing</h4>
+                            <p>Allow search engines to index your public trips</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="searchIndexing">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <!-- Data Retention -->
+                    <div class="privacy-option">
+                        <div class="privacy-info">
+                            <h4>Data Retention Period</h4>
+                            <p>How long we keep your inactive account data</p>
+                        </div>
+                        <select class="privacy-select" id="dataRetention">
+                            <option value="6months">6 Months</option>
+                            <option value="1year" selected>1 Year</option>
+                            <option value="2years">2 Years</option>
+                            <option value="indefinite">Indefinitely</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Third-Party Sharing -->
+                    <div class="privacy-option">
+                        <div class="privacy-info">
+                            <h4>Third-Party Data Sharing</h4>
+                            <p>Allow sharing of anonymized data with trusted partners</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="thirdPartySharing">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <!-- Cookie Preferences -->
+                    <div class="privacy-option">
+                        <div class="privacy-info">
+                            <h4>Cookie Preferences</h4>
+                           <p>Manage how we use cookies to enhance your experience</p>
+                        </div>
+                        <button class="btn btn-secondary" id="manageCookiesBtn">
+                            <i class="fas fa-cookie-bite"></i> Manage Cookies
+                        </button>
+                    </div>
+                    
+                    <!-- Data Export -->
                     <div class="privacy-option">
                         <div class="privacy-info">
                             <h4>Data Export</h4>
-                            <p>Request a copy of all your data</p>
+                            <p>Download a copy of all your personal data</p>
                         </div>
-                        <button class="btn btn-secondary" id="exportData">
+                        <button class="btn btn-secondary" id="exportDataBtn">
                             <i class="fas fa-download"></i> Export Data
                         </button>
                     </div>
                     
+                    <!-- Clear History -->
+                    <div class="privacy-option">
+                        <div class="privacy-info">
+                            <h4>Clear Search History</h4>
+                            <p>Remove all your saved search queries and preferences</p>
+                        </div>
+                        <button class="btn btn-secondary" id="clearHistoryBtn">
+                            <i class="fas fa-history"></i> Clear History
+                        </button>
+                    </div>
+                    
                     <div class="button-group">
-                        <button class="btn btn-primary" id="savePrivacy">
+                        <button class="btn btn-primary" id="savePrivacyBtn">
                             <i class="fas fa-save"></i> Save Privacy Settings
+                        </button>
+                        <button class="btn btn-secondary" id="resetPrivacyBtn">
+                            <i class="fas fa-undo"></i> Reset to Defaults
                         </button>
                     </div>
                 </div>
@@ -1073,10 +1159,10 @@
                     <p>These actions are irreversible. Please proceed with caution.</p>
                     
                     <div class="button-group">
-                        <button class="btn btn-danger" id="deleteAccount">
+                        <button class="btn btn-danger" id="deleteAccountBtn">
                             <i class="fas fa-trash"></i> Delete Account
                         </button>
-                        <button class="btn btn-secondary" id="deactivateAccount">
+                        <button class="btn btn-secondary" id="deactivateAccountBtn">
                             <i class="fas fa-user-slash"></i> Deactivate Account
                         </button>
                     </div>
@@ -1084,6 +1170,100 @@
             </div>
         </div>
     </main>
+
+    <!-- Cookie Preferences Modal -->
+    <div id="cookieModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeCookieModal">&times;</span>
+            <h2>Cookie Preferences</h2>
+            
+            <div class="form-section">
+                <div class="privacy-option">
+                    <div class="privacy-info">
+                        <h4>Essential Cookies</h4>
+                        <p>Required for the website to function properly. Cannot be disabled.</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="essentialCookies" checked disabled>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="privacy-option">
+                    <div class="privacy-info">
+                        <h4>Performance Cookies</h4>
+                        <p>Help us understand how visitors interact with our website</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="performanceCookies" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="privacy-option">
+                    <div class="privacy-info">
+                        <h4>Functional Cookies</h4>
+                        <p>Remember your preferences and settings</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="functionalCookies" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="privacy-option">
+                    <div class="privacy-info">
+                        <h4>Targeting Cookies</h4>
+                        <p>Used to deliver relevant advertisements</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="targetingCookies">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="privacy-option">
+                    <div class="privacy-info">
+                        <h4>Social Media Cookies</h4>
+                        <p>Allow you to share content on social media</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="socialCookies">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="button-group">
+                <button class="btn btn-primary" id="saveCookiePrefs">
+                    <i class="fas fa-save"></i> Save Preferences
+                </button>
+                <button class="btn btn-secondary" id="acceptAllCookies">
+                    <i class="fas fa-check"></i> Accept All
+                </button>
+                <button class="btn btn-secondary" id="rejectAllCookies">
+                    <i class="fas fa-times"></i> Reject All
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <h2 id="confirmationTitle"></h2>
+            <p id="confirmationMessage"></p>
+            
+            <div class="button-group">
+                <button class="btn btn-danger" id="confirmAction">
+                    Confirm
+                </button>
+                <button class="btn btn-secondary" id="cancelAction">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- JavaScript -->
     <script>
@@ -1124,7 +1304,19 @@
                         privacy: {
                             profileVisibility: "public",
                             tripSharing: true,
-                            activityTracking: true
+                            activityTracking: true,
+                            locationSharing: false,
+                            emailVisibility: false,
+                            searchIndexing: true,
+                            dataRetention: "1year",
+                            thirdPartySharing: false,
+                            cookies: {
+                                essential: true,
+                                performance: true,
+                                functional: true,
+                                targeting: false,
+                                social: false
+                            }
                         }
                     };
                 }
@@ -1153,6 +1345,23 @@
                 document.getElementById('userAvatar').textContent = 
                     this.currentUser.firstName[0] + this.currentUser.lastName[0];
                 
+                // Notifications
+                document.getElementById('emailNotifications').checked = this.currentUser.notifications.email;
+                document.getElementById('pushNotifications').checked = this.currentUser.notifications.push;
+                document.getElementById('tripReminders').checked = this.currentUser.notifications.reminders;
+                document.getElementById('budgetAlerts').checked = this.currentUser.notifications.budgetAlerts;
+                document.getElementById('promotionalOffers').checked = this.currentUser.notifications.promotional;
+                
+                // Privacy Settings
+                document.getElementById('profileVisibility').value = this.currentUser.privacy.profileVisibility;
+                document.getElementById('tripSharing').checked = this.currentUser.privacy.tripSharing;
+                document.getElementById('activityTracking').checked = this.currentUser.privacy.activityTracking;
+                document.getElementById('locationSharing').checked = this.currentUser.privacy.locationSharing;
+                document.getElementById('emailVisibility').checked = this.currentUser.privacy.emailVisibility;
+                document.getElementById('searchIndexing').checked = this.currentUser.privacy.searchIndexing;
+                document.getElementById('dataRetention').value = this.currentUser.privacy.dataRetention;
+                document.getElementById('thirdPartySharing').checked = this.currentUser.privacy.thirdPartySharing;
+                
                 // Travel Preferences
                 this.updateTravelStyleTags();
                 document.querySelector(`input[name="accommodation"][value="${this.currentUser.accommodation}"]`).checked = true;
@@ -1165,17 +1374,13 @@
                 document.getElementById('language').value = this.currentUser.language;
                 document.getElementById('currency').value = this.currentUser.currency;
                 
-                // Notifications
-                document.getElementById('emailNotifications').checked = this.currentUser.notifications.email;
-                document.getElementById('pushNotifications').checked = this.currentUser.notifications.push;
-                document.getElementById('tripReminders').checked = this.currentUser.notifications.reminders;
-                document.getElementById('budgetAlerts').checked = this.currentUser.notifications.budgetAlerts;
-                document.getElementById('promotionalOffers').checked = this.currentUser.notifications.promotional;
-                
-                // Privacy Settings
-                document.getElementById('profileVisibility').value = this.currentUser.privacy.profileVisibility;
-                document.getElementById('tripSharing').checked = this.currentUser.privacy.tripSharing;
-                document.getElementById('activityTracking').checked = this.currentUser.privacy.activityTracking;
+                // Cookie Preferences
+                if (this.currentUser.privacy.cookies) {
+                    document.getElementById('performanceCookies').checked = this.currentUser.privacy.cookies.performance;
+                    document.getElementById('functionalCookies').checked = this.currentUser.privacy.cookies.functional;
+                    document.getElementById('targetingCookies').checked = this.currentUser.privacy.cookies.targeting;
+                    document.getElementById('socialCookies').checked = this.currentUser.privacy.cookies.social;
+                }
             },
             
             // Update travel style tags
@@ -1214,8 +1419,13 @@
                 });
                 
                 // Save Privacy Settings
-                document.getElementById('savePrivacy').addEventListener('click', () => {
+                document.getElementById('savePrivacyBtn').addEventListener('click', () => {
                     this.savePrivacySettings();
+                });
+                
+                // Reset Privacy Settings
+                document.getElementById('resetPrivacyBtn').addEventListener('click', () => {
+                    this.resetPrivacySettings();
                 });
                 
                 // Travel style tags
@@ -1231,23 +1441,80 @@
                 });
                 
                 // Export data
-                document.getElementById('exportData').addEventListener('click', () => {
+                document.getElementById('exportDataBtn').addEventListener('click', () => {
                     this.exportUserData();
                 });
                 
+                // Clear history
+                document.getElementById('clearHistoryBtn').addEventListener('click', () => {
+                    this.showConfirmation(
+                        'Clear Search History',
+                        'Are you sure you want to clear all your search history? This action cannot be undone.',
+                        () => this.clearSearchHistory()
+                    );
+                });
+                
+                // Manage cookies
+                document.getElementById('manageCookiesBtn').addEventListener('click', () => {
+                    this.showCookieModal();
+                });
+                
+                // Save cookie preferences
+                document.getElementById('saveCookiePrefs').addEventListener('click', () => {
+                    this.saveCookiePreferences();
+                });
+                
+                // Accept all cookies
+                document.getElementById('acceptAllCookies').addEventListener('click', () => {
+                    this.acceptAllCookies();
+                });
+                
+                // Reject all cookies
+                document.getElementById('rejectAllCookies').addEventListener('click', () => {
+                    this.rejectAllCookies();
+                });
+                
+                // Close cookie modal
+                document.getElementById('closeCookieModal').addEventListener('click', () => {
+                    this.hideCookieModal();
+                });
+                
                 // Delete account
-                document.getElementById('deleteAccount').addEventListener('click', () => {
-                    this.deleteAccount();
+                document.getElementById('deleteAccountBtn').addEventListener('click', () => {
+                    this.showConfirmation(
+                        'Delete Account',
+                        'Are you sure you want to delete your account? All your data will be permanently removed. This action cannot be undone.',
+                        () => this.deleteAccount()
+                    );
                 });
                 
                 // Deactivate account
-                document.getElementById('deactivateAccount').addEventListener('click', () => {
-                    this.deactivateAccount();
+                document.getElementById('deactivateAccountBtn').addEventListener('click', () => {
+                    this.showConfirmation(
+                        'Deactivate Account',
+                        'Your account will be deactivated. You can reactivate it anytime by logging in. All your data will be preserved.',
+                        () => this.deactivateAccount()
+                    );
                 });
                 
                 // Logout
                 document.getElementById('logoutBtn').addEventListener('click', () => {
                     this.logout();
+                });
+                
+                // Modal close handlers
+                window.addEventListener('click', (e) => {
+                    if (e.target.id === 'cookieModal') {
+                        this.hideCookieModal();
+                    }
+                    if (e.target.id === 'confirmationModal') {
+                        this.hideConfirmationModal();
+                    }
+                });
+                
+                // Cancel action
+                document.getElementById('cancelAction').addEventListener('click', () => {
+                    this.hideConfirmationModal();
                 });
             },
             
@@ -1267,7 +1534,7 @@
                         link.classList.add('active');
                         
                         // Get target section
-                        const targetId = link.getAttribute('href').substring(1);
+                        const targetId = link.getAttribute('data-section');
                         
                         // Hide all sections
                         sections.forEach(section => {
@@ -1375,11 +1642,84 @@
                 this.currentUser.privacy = {
                     profileVisibility: document.getElementById('profileVisibility').value,
                     tripSharing: document.getElementById('tripSharing').checked,
-                    activityTracking: document.getElementById('activityTracking').checked
+                    activityTracking: document.getElementById('activityTracking').checked,
+                    locationSharing: document.getElementById('locationSharing').checked,
+                    emailVisibility: document.getElementById('emailVisibility').checked,
+                    searchIndexing: document.getElementById('searchIndexing').checked,
+                    dataRetention: document.getElementById('dataRetention').value,
+                    thirdPartySharing: document.getElementById('thirdPartySharing').checked,
+                    cookies: this.currentUser.privacy.cookies // Keep existing cookie prefs
                 };
                 
                 this.saveToLocalStorage();
                 this.showMessage('Privacy settings updated!', 'success');
+            },
+            
+            // Reset privacy settings to defaults
+            resetPrivacySettings: function() {
+                this.showConfirmation(
+                    'Reset Privacy Settings',
+                    'Are you sure you want to reset all privacy settings to their defaults?',
+                    () => {
+                        // Reset to default values
+                        this.currentUser.privacy = {
+                            profileVisibility: "public",
+                            tripSharing: true,
+                            activityTracking: true,
+                            locationSharing: false,
+                            emailVisibility: false,
+                            searchIndexing: true,
+                            dataRetention: "1year",
+                            thirdPartySharing: false,
+                            cookies: {
+                                essential: true,
+                                performance: true,
+                                functional: true,
+                                targeting: false,
+                                social: false
+                            }
+                        };
+                        
+                        this.loadUserData();
+                        this.saveToLocalStorage();
+                        this.showMessage('Privacy settings reset to defaults!', 'success');
+                    }
+                );
+            },
+            
+            // Save cookie preferences
+            saveCookiePreferences: function() {
+                this.currentUser.privacy.cookies = {
+                    essential: true, // Always required
+                    performance: document.getElementById('performanceCookies').checked,
+                    functional: document.getElementById('functionalCookies').checked,
+                    targeting: document.getElementById('targetingCookies').checked,
+                    social: document.getElementById('socialCookies').checked
+                };
+                
+                this.saveToLocalStorage();
+                this.showMessage('Cookie preferences saved!', 'success');
+                this.hideCookieModal();
+            },
+            
+            // Accept all cookies
+            acceptAllCookies: function() {
+                document.getElementById('performanceCookies').checked = true;
+                document.getElementById('functionalCookies').checked = true;
+                document.getElementById('targetingCookies').checked = true;
+                document.getElementById('socialCookies').checked = true;
+                
+                this.saveCookiePreferences();
+            },
+            
+            // Reject all cookies
+            rejectAllCookies: function() {
+                document.getElementById('performanceCookies').checked = false;
+                document.getElementById('functionalCookies').checked = false;
+                document.getElementById('targetingCookies').checked = false;
+                document.getElementById('socialCookies').checked = false;
+                
+                this.saveCookiePreferences();
             },
             
             // Change avatar
@@ -1435,33 +1775,40 @@
                 this.showMessage('Data export started. Check your downloads folder.', 'success');
             },
             
+            // Clear search history
+            clearSearchHistory: function() {
+                // In real app, this would clear search history from backend
+                this.showMessage('Search history cleared successfully!', 'success');
+            },
+            
             // Delete account
             deleteAccount: function() {
-                if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-                    // In real app, this would make an API call
-                    localStorage.removeItem('globeTrotterUser');
-                    localStorage.removeItem('userTrips');
-                    
-                    this.showMessage('Account deleted successfully. Redirecting to homepage...', 'success');
-                    
-                    setTimeout(() => {
-                        // Redirect to homepage
-                        window.location.href = 'index.html';
-                    }, 2000);
-                }
+                // In real app, this would make an API call
+                localStorage.removeItem('globeTrotterUser');
+                localStorage.removeItem('userTrips');
+                localStorage.removeItem('searchHistory');
+                
+                this.showMessage('Account deleted successfully. Redirecting to homepage...', 'success');
+                
+                setTimeout(() => {
+                    // Redirect to homepage
+                    window.location.href = 'index.html';
+                }, 2000);
+                
+                this.hideConfirmationModal();
             },
             
             // Deactivate account
             deactivateAccount: function() {
-                if (confirm('Deactivate your account? You can reactivate it anytime by logging in.')) {
-                    // In real app, this would make an API call
-                    this.showMessage('Account deactivated. We hope to see you again soon!', 'success');
-                    
-                    setTimeout(() => {
-                        // Redirect to homepage
-                        window.location.href = 'index.html';
-                    }, 2000);
-                }
+                // In real app, this would make an API call
+                this.showMessage('Account deactivated. We hope to see you again soon!', 'success');
+                
+                setTimeout(() => {
+                    // Redirect to homepage
+                    window.location.href = 'index.html';
+                }, 2000);
+                
+                this.hideConfirmationModal();
             },
             
             // Logout
@@ -1469,10 +1816,49 @@
                 // Clear localStorage
                 localStorage.removeItem('globeTrotterUser');
                 localStorage.removeItem('userTrips');
+                localStorage.removeItem('searchHistory');
                 
                 // Redirect to login page
                 window.location.href = 'login.html';
             },
+            
+            // =============================================
+            // MODAL FUNCTIONS
+            // =============================================
+            
+            // Show cookie modal
+            showCookieModal: function() {
+                document.getElementById('cookieModal').style.display = 'flex';
+            },
+            
+            // Hide cookie modal
+            hideCookieModal: function() {
+                document.getElementById('cookieModal').style.display = 'none';
+            },
+            
+            // Show confirmation modal
+            showConfirmation: function(title, message, confirmCallback) {
+                document.getElementById('confirmationTitle').textContent = title;
+                document.getElementById('confirmationMessage').textContent = message;
+                document.getElementById('confirmationModal').style.display = 'flex';
+                
+                // Remove previous event listeners
+                const confirmBtn = document.getElementById('confirmAction');
+                const newConfirmBtn = confirmBtn.cloneNode(true);
+                confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+                
+                // Add new event listener
+                newConfirmBtn.addEventListener('click', confirmCallback);
+            },
+            
+            // Hide confirmation modal
+            hideConfirmationModal: function() {
+                document.getElementById('confirmationModal').style.display = 'none';
+            },
+            
+            // =============================================
+            // UTILITY FUNCTIONS
+            // =============================================
             
             // Save to localStorage
             saveToLocalStorage: function() {
