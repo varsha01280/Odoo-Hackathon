@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GlobeTrotter - Paris & Rome Adventure</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap">
+    <style>
+        /* Universal Header Styles */
+        .global-header {
+            background: linear-gradient(135deg, #4F46E5 0%, #818CF8 100%);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            transition: transform 0.3s ease;
+        }
+
+        .header-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .header-logo i {
+            font-size: 2rem;
+            color: white;
+        }
+
+        .header-logo span {
+            background: linear-gradient(to right, #ffffff, #e2e8f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+        }
+
+        .mobile-menu-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .header-btn {
+            padding: 10px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .btn-login {
+            background-color: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-login:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .btn-signup {
+            background-color: white;
+            color: #4F46E5;
+            border: 2px solid white;
+        }
+
+        .btn-signup:hover {
+            background-color: #f8fafc;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Public Page Styles */
+        :root {
+            --primary: #4F46E5;
+            --primary-light: #818CF8;
+            --secondary: #10B981;
+            --accent: #F59E0B;
+            --danger: #EF4444;
+            --success: #10B981;
+            --background: #F8FAFC;
+            --card: #FFFFFF;
+            --text: #1E293B;
+            --text-light: #64748B;
+            --border: #E2E8F0;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            --radius: 16px;
+            --radius-sm: 10px;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: var(--text);
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        /* Public Header */
+        .public-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: var(--radius);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .public-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: linear-gradient(135deg, var(--accent), #FBBF24);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 0 var(--radius) 0 var(--radius);
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .public-badge i {
+            margin-right: 8px;
+        }
+
+        .trip-title h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .trip-subtitle {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 25px;
+            line-height: 1.6;
+            opacity: 0.95;
+        }
+
+        .trip-meta {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 10px 20px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+        }
+
+        .meta-item i {
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        /* Share Controls */
+        .share-controls {
+            background-color: var(--card);
+            border-radius: var(--radius);
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .url-container {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .url-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .url-label i {
+            color: var(--primary);
+        }
+
+        .url-display {
+            display: flex;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+        }
+
+        .url-display input {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            background-color: #f8fafc;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            color: var(--text);
+            user-select: all;
+        }
+
+        .copy-url-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .copy-url-btn:hover {
+            background-color: #4338ca;
+        }
+
+        .copy-url-btn.copied {
+            background-color: var(--success);
+        }
+
+        .copy-url-btn.copied i::before {
+            content: '\f00c';
+        }
+
+        .social-share {
+            display: flex;
+            gap: 10px;
+        }
+
+        .social-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-3px) scale(1.1);
+        }
+
+        .social-btn.facebook {
+            background-color: #1877F2;
+        }
+
+        .social-btn.twitter {
+            background-color: #1DA1F2;
+        }
+
+        .social-btn.pinterest {
+            background-color: #E60023;
+        }
+
+        .social-btn.whatsapp {
+            background-color: #25D366;
+        }
+
+        .social-btn.link {
+            background-color: var(--primary);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .btn-primary:hover {
+            background-color: #4338ca;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.2);
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background-color: #f1f5f9;
+            border-color: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        /* Trip Overview */
+        .trip-overview {
+            background-color: var(--card);
+            border-radius: var(--radius);
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .overview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .overview-header h2 {
+            font-size: 1.8rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .overview-header h2 i {
+            color: var(--primary);
+        }
+
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .overview-card {
+            background-color: #f8fafc;
+            border-radius: var(--radius-sm);
+            padding: 25px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .overview-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-light);
+        }
+
+        .overview-card i {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .overview-card h3 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+
+        .overview-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Itinerary Preview */
+        .itinerary-preview {
+            background-color: var(--card);
+            border-radius: var(--radius);
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow);
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .preview-header h2 {
+            font-size: 1.8rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .preview-header h2 i {
+            color: var(--primary);
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--border);
+        }
+
+        .timeline-day {
+            position: relative;
+            margin-bottom: 40px;
+            padding-left: 60px;
+        }
+
+        .timeline-day:last-child {
+            margin-bottom: 0;
+        }
+
+        .day-marker {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.3rem;
+            border: 5px solid white;
+            box-shadow: 0 0 0 3px var(--border);
+            z-index: 1;
+        }
+
+        .day-header {
+            margin-bottom: 20px;
+        }
+
+        .day-header h3 {
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+            color: var(--text);
+        }
+
+        .day-date {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .activity-card {
+            background-color: white;
+            border-radius: var(--radius-sm);
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 2px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .activity-card:hover {
+            border-color: var(--primary-light);
+            box-shadow: var(--shadow);
+            transform: translateX(5px);
+        }
+
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .activity-title h4 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: var(--text);
+        }
+
+        .activity-time {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .activity-desc {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .activity-meta {
+            display: flex;
+            gap: 15px;
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        .activity-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .activity-meta i {
+            color: var(--primary-light);
+        }
+
+        /* Author Info */
+        .author-section {
+            background-color: var(--card);
+            border-radius: var(--radius);
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .author-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 3px solid var(--primary-light);
+        }
+
+        .author-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .author-info h3 {
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+            color: var(--text);
+        }
+
+        .author-info p {
+            color: var(--text-light);
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+
+        .author-stats {
+            display: flex;
+            gap: 20px;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .author-stats span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Footer */
+        .public-footer {
+            text-align: center;
+            padding: 30px 0;
+            border-top: 2px solid var(--border);
+            color: var(--text-light);
+        }
+
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .footer-tagline {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        .footer-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--success);
+            color: white;
+            padding: 15px 25px;
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1001;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.error {
+            background-color: var(--danger);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background-color: var(--card);
+            border-radius: var(--radius);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .modal-header i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .modal-header h3 {
+            font-size: 1.8rem;
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+
+        .modal-header p {
+            color: var(--text-light);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .modal-actions .btn {
+            flex: 1;
+        }
+
+        /* Read-only Notice */
+        .read-only-notice {
+            background-color: rgba(79, 70, 229, 0.1);
+            border-left: 4px solid var(--primary);
+            padding: 15px 20px;
+            margin: 20px 0 25px 0;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .read-only-notice i {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .read-only-notice p {
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
+        /* QR Code */
+        .qr-code {
+            text-align: center;
+            margin-top: 25px;
+            padding: 20px;
+            background-color: #f8fafc;
+            border-radius: var(--radius-sm);
+        }
+
+        .qr-code img {
+            max-width: 150px;
+            margin: 0 auto 15px;
+            display: block;
+        }
+
+        .qr-code p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-nav {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: linear-gradient(135deg, #4F46E5 0%, #818CF8 100%);
+                flex-direction: column;
+                padding: 20px;
+                gap: 15px;
+                transform: translateY(-100%);
+                opacity: 0;
+                transition: all 0.3s ease;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .header-nav.active {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .auth-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .header-btn {
+                width: 100%;
+            }
+
+            .public-header {
+                padding: 30px 15px;
+            }
+
+            .trip-title h1 {
+                font-size: 2.2rem;
+            }
+
+            .trip-meta {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .meta-item {
+                width: fit-content;
+                margin: 0 auto;
+            }
+
+            .share-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .url-container {
+                min-width: 100%;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn-primary {
+                min-width: 100%;
+            }
+
+            .timeline::before {
+                left: 25px;
+            }
+
+            .timeline-day {
+                padding-left: 50px;
+            }
+
+            .day-marker {
+                width: 50px;
+                height: 50px;
+                font-size: 1.1rem;
+            }
+
+            .author-section {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .author-stats {
+                justify-content: center;
+            }
+
+            .footer-actions {
+                flex-direction: column;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .global-header,
+            .share-controls,
+            .action-buttons,
+            .social-share,
+            .public-badge,
+            .read-only-notice,
+            .qr-code,
+            .footer-actions {
+                display: none !important;
+            }
+
+            .container {
+                padding: 0;
+            }
+
+            .public-header {
+                background: white !important;
+                color: black !important;
+                padding: 20px !important;
+                border: 1px solid #ddd;
+            }
+
+            .trip-title h1 {
+                color: black !important;
+                text-shadow: none !important;
+            }
+
+            .trip-subtitle,
+            .meta-item {
+                color: #666 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Universal Header -->
+    <header class="global-header">
+        <div class="header-container">
+            <!-- Logo -->
+            <a href="dashboard.html" class="header-logo">
+                <i class="fas fa-globe-americas"></i>
+                <span>GlobeTrotter</span>
+            </a>
+
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <!-- Navigation -->
+            <nav class="header-nav" id="headerNav">
+                <div class="auth-buttons" id="authButtons">
+                    <a href="login.html" class="header-btn btn-login">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Login
+                    </a>
+                    <a href="signup.html" class="header-btn btn-signup">
+                        <i class="fas fa-user-plus"></i>
+                        Sign Up
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Public Header -->
+        <div class="public-header">
+            <div class="public-badge">
+                <i class="fas fa-globe"></i> Public Itinerary
+            </div>
+
+            <div class="trip-title">
+                <h1>Paris & Rome Adventure</h1>
+                <p class="trip-subtitle">A 7-day journey through the heart of Europe, exploring iconic landmarks and hidden gems</p>
+            </div>
+            <div class="trip-meta">
+                <div class="meta-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>June 15-21, 2024 • 7 days</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>2 cities • 15 activities</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-wallet"></i>
+                    <span>Estimated budget: $2,850</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-eye"></i>
+                    <span>1,247 views</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Read-only Notice -->
+        <div class="read-only-notice">
+            <i class="fas fa-lock"></i>
+            <p>This is a read-only public itinerary. To edit or customize this trip, click "Copy Trip" below.</p>
+        </div>
+
+        <!-- Share Controls -->
+        <div class="share-controls">
+            <div class="url-container">
+                <label class="url-label">
+                    <i class="fas fa-link"></i> Shareable URL
+                </label>
+                <div class="url-display">
+                    <input type="text" id="share-url" value="https://globetrotter.app/trips/paris-rome-2024" readonly>
+                    <button class="copy-url-btn" id="copy-url-btn">
+                        <i class="fas fa-copy"></i> Copy
+                    </button>
+                </div>
+            </div>
+            <div class="social-share">
+                <button class="social-btn facebook" title="Share on Facebook" data-social="facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </button>
+                <button class="social-btn twitter" title="Share on Twitter" data-social="twitter">
+                    <i class="fab fa-twitter"></i>
+                </button>
+                <button class="social-btn pinterest" title="Save to Pinterest" data-social="pinterest">
+                    <i class="fab fa-pinterest"></i>
+                </button>
+                <button class="social-btn whatsapp" title="Share on WhatsApp" data-social="whatsapp">
+                    <i class="fab fa-whatsapp"></i>
+                </button>
+                <button class="social-btn link" title="Copy link" id="share-link-btn">
+                    <i class="fas fa-share-alt"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- QR Code -->
+        <div class="qr-code">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://globetrotter.app/trips/paris-rome-2024" alt="QR Code">
+            <p>Scan QR code to view on mobile</p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button class="btn btn-primary" id="copy-trip-btn">
+                <i class="fas fa-copy"></i> Copy This Trip to My Account
+            </button>
+            <button class="btn btn-secondary" id="download-pdf-btn">
+                <i class="fas fa-file-pdf"></i> Download as PDF
+            </button>
+            <button class="btn btn-secondary" id="print-btn">
+                <i class="fas fa-print"></i> Print Itinerary
+            </button>
+        </div>
+
+        <!-- Trip Overview -->
+        <div class="trip-overview">
+            <div class="overview-header">
+                <h2><i class="fas fa-chart-pie"></i> Trip Overview</h2>
+                <div class="meta-item">
+                    <i class="fas fa-heart"></i>
+                    <span>84 likes</span>
+                </div>
+            </div>
+            <div class="overview-grid">
+                <div class="overview-card">
+                    <i class="fas fa-clock"></i>
+                    <h3>7 Days</h3>
+                    <p>Trip Duration</p>
+                </div>
+                <div class="overview-card">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>2 Cities</h3>
+                    <p>Paris, Rome</p>
+                </div>
+                <div class="overview-card">
+                    <i class="fas fa-list-check"></i>
+                    <h3>15</h3>
+                    <p>Activities</p>
+                </div>
+                <div class="overview-card">
+                    <i class="fas fa-wallet"></i>
+                    <h3>$2,850</h3>
+                    <p>Estimated Budget</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Itinerary Preview -->
+        <div class="itinerary-preview">
+            <div class="preview-header">
+                <h2><i class="fas fa-route"></i> Itinerary Preview</h2>
+                <div class="meta-item">
+                    <i class="fas fa-clock"></i>
+                    <span>Total: 42 hours</span>
+                </div>
+            </div>
+            <div class="timeline">
+                <!-- Day 1 -->
+                <div class="timeline-day">
+                    <div class="day-marker">1</div>
+                    <div class="day-header">
+                        <h3>Day 1: Arrival in Paris</h3>
+                        <div class="day-date">
+                            <i class="fas fa-calendar-day"></i>
+                            <span>Saturday, June 15, 2024</span>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <div class="activity-header">
+                            <div class="activity-title">
+                                <h4>Eiffel Tower Visit</h4>
+                                <div class="activity-time">
+                                    <i class="fas fa-clock"></i>
+                                    <span>4:00 PM - 7:00 PM</span>
+                                </div>
+                            </div>
+                            <div class="activity-price">$45</div>
+                        </div>
+                        <p class="activity-desc">Skip-the-line access to the iconic Eiffel Tower with guided tour to the summit. Enjoy breathtaking views of Paris from 276 meters high.</p>
+                        <div class="activity-meta">
+                            <span><i class="fas fa-clock"></i> 3 hours</span>
+                            <span><i class="fas fa-tag"></i> Sightseeing</span>
+                            <span><i class="fas fa-map-marker-alt"></i> Champ de Mars</span>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <div class="activity-header">
+                            <div class="activity-title">
+                                <h4>Welcome Dinner at Le Jules Verne</h4>
+                                <div class="activity-time">
+                                    <i class="fas fa-clock"></i>
+                                    <span>8:00 PM - 10:00 PM</span>
+                                </div>
+                            </div>
+                            <div class="activity-price">$150</div>
+                        </div>
+                        <p class="activity-desc">Fine dining experience with panoramic views of Paris from the Eiffel Tower's second floor restaurant.</p>
+                        <div class="activity-meta">
+                            <span><i class="fas fa-clock"></i> 2 hours</span>
+                            <span><i class="fas fa-tag"></i> Fine Dining</span>
+                            <span><i class="fas fa-map-marker-alt"></i> Eiffel Tower</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 2 -->
+                <div class="timeline-day">
+                    <div class="day-marker">2</div>
+                    <div class="day-header">
+                        <h3>Day 2: Paris Exploration</h3>
+                        <div class="day-date">
+                            <i class="fas fa-calendar-day"></i>
+                            <span>Sunday, June 16, 2024</span>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <div class="activity-header">
+                            <div class="activity-title">
+                                <h4>Louvre Museum Tour</h4>
+                                <div class="activity-time">
+                                    <i class="fas fa-clock"></i>
+                                    <span>9:30 AM - 12:30 PM</span>
+                                </div>
+                            </div>
+                            <div class="activity-price">$65</div>
+                        </div>
+                        <p class="activity-desc">Guided tour of the world's largest art museum, including Mona Lisa, Venus de Milo, and other masterpieces.</p>
+                        <div class="activity-meta">
+                            <span><i class="fas fa-clock"></i> 3 hours</span>
+                            <span><i class="fas fa-tag"></i> Art & Culture</span>
+                            <span><i class="fas fa-map-marker-alt"></i> Rue de Rivoli</span>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <div class="activity-header">
+                            <div class="activity-title">
+                                <h4>Seine River Cruise</h4>
+                                <div class="activity-time">
+                                    <i class="fas fa-clock"></i>
+                                    <span>2:00 PM - 3:30 PM</span>
+                                </div>
+                            </div>
+                            <div class="activity-price">$25</div>
+                        </div>
+                        <p class="activity-desc">Relaxing cruise along the Seine River with views of Notre-Dame, Musée d'Orsay, and other landmarks.</p>
+                        <div class="activity-meta">
+                            <span><i class="fas fa-clock"></i> 1.5 hours</span>
+                            <span><i class="fas fa-tag"></i> Sightseeing</span>
+                            <span><i class="fas fa-map-marker-alt"></i> Port de la Bourdonnais</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 3 -->
+                <div class="timeline-day">
+                    <div class="day-marker">3</div>
+                    <div class="day-header">
+                        <h3>Day 3: Paris to Rome</h3>
+                        <div class="day-date">
+                            <i class="fas fa-calendar-day"></i>
+                            <span>Monday, June 17, 2024</span>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <div class="activity-header">
+                            <div class="activity-title">
+                                <h4>Flight to Rome</h4>
+                                <div class="activity-time">
+                                    <i class="fas fa-clock"></i>
+                                    <span>8:00 AM - 10:30 AM</span>
+                                </div>
+                            </div>
+                            <div class="activity-price">$120</div>
+                        </div>
+                        <p class="activity-desc">Morning flight from Charles de Gaulle Airport to Rome Fiumicino Airport.</p>
+                        <div class="activity-meta">
+                            <span><i class="fas fa-clock"></i> 2.5 hours</span>
+                            <span><i class="fas fa-tag"></i> Travel</span>
+                            <span><i class="fas fa-map-marker-alt"></i> CDG to FCO</span>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <div class="activity-header">
+                            <div class="activity-title">
+                                <h4>Colosseum Tour</h4>
+                                <div class="activity-time">
+                                    <i class="fas fa-clock"></i>
+                                    <span>2:00 PM - 4:00 PM</span>
+                                </div>
+                            </div>
+                            <div class="activity-price">$55</div>
+                        </div>
+                        <p class="activity-desc">Skip-the-line tour of ancient Roman amphitheater with access to Roman Forum and Palatine Hill.</p>
+                        <div class="activity-meta">
+                            <span><i class="fas fa-clock"></i> 2 hours</span>
+                            <span><i class="fas fa-tag"></i> Historical</span>
+                            <span><i class="fas fa-map-marker-alt"></i> Piazza del Colosseo</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px; color: var(--text-light);">
+                <p><i class="fas fa-ellipsis-h"></i> 4 more days of itinerary available</p>
+                <button class="btn btn-secondary" id="view-full-btn">
+                    <i class="fas fa-expand"></i> View Full Itinerary (15 Activities)
+                </button>
+            </div>
+        </div>
+
+        <!-- Author Info -->
+        <div class="author-section">
+            <div class="author-avatar">
+                <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" alt="Sarah Johnson">
+            </div>
+            <div class="author-info">
+                <h3>Created by Sarah Johnson</h3>
+                <p>Travel enthusiast & photographer • 15 trips planned • 2.4k followers</p>
+                <div class="author-stats">
+                    <span><i class="fas fa-globe"></i> 12 countries visited</span>
+                    <span><i class="fas fa-star"></i> 4.9 rating</span>
+                    <span><i class="fas fa-share"></i> 47 trips shared</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="public-footer">
+            <div class="footer-logo">GlobeTrotter</div>
+            <p class="footer-tagline">Plan. Share. Explore. Together.</p>
+            <p>This itinerary is publicly shared on GlobeTrotter • All rights reserved</p>
+            <div class="footer-actions">
+                <button class="btn btn-secondary" id="create-account-btn">
+                    <i class="fas fa-user-plus"></i> Create Free Account
+                </button>
+                <button class="btn btn-secondary" id="explore-more-btn">
+                    <i class="fas fa-compass"></i> Explore More Trips
+                </button>
+            </div>
+        </div>
+
+        <!-- Copy Trip Modal -->
+        <div class="modal" id="copy-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <i class="fas fa-copy"></i>
+                    <h3>Copy This Trip</h3>
+                    <p>This will create a duplicate of this itinerary in your account that you can edit and customize.</p>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" id="cancel-copy">Cancel</button>
+                    <button class="btn btn-primary" id="confirm-copy">Copy to My Trips</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notification -->
+        <div class="toast" id="toast">
+            <i class="fas fa-check-circle"></i>
+            <span id="toast-message">URL copied to clipboard!</span>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const headerNav = document.getElementById('headerNav');
+        const copyUrlBtn = document.getElementById('copy-url-btn');
+        const shareLinkBtn = document.getElementById('share-link-btn');
+        const shareUrlInput = document.getElementById('share-url');
+        const socialButtons = document.querySelectorAll('.social-btn');
+        const copyTripBtn = document.getElementById('copy-trip-btn');
+        const downloadPdfBtn = document.getElementById('download-pdf-btn');
+        const printBtn = document.getElementById('print-btn');
+        const viewFullBtn = document.getElementById('view-full-btn');
+        const createAccountBtn = document.getElementById('create-account-btn');
+        const exploreMoreBtn = document.getElementById('explore-more-btn');
+        const copyModal = document.getElementById('copy-modal');
+        const cancelCopyBtn = document.getElementById('cancel-copy');
+        const confirmCopyBtn = document.getElementById('confirm-copy');
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toast-message');
+
+        // Toggle mobile menu
+        mobileMenuBtn.addEventListener('click', () => {
+            headerNav.classList.toggle('active');
+            mobileMenuBtn.innerHTML = headerNav.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!headerNav.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                headerNav.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            }
+        });
+
+        // Copy URL functionality
+        copyUrlBtn.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(shareUrlInput.value);
+                copyUrlBtn.classList.add('copied');
+                copyUrlBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                showToast('URL copied to clipboard!');
+                
+                setTimeout(() => {
+                    copyUrlBtn.classList.remove('copied');
+                    copyUrlBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                }, 2000);
+            } catch (err) {
+                // Fallback for older browsers
+                shareUrlInput.select();
+                document.execCommand('copy');
+                showToast('URL copied to clipboard!');
+            }
+        });
+
+        // Share link button
+        shareLinkBtn.addEventListener('click', async () => {
+            try {
+                if (navigator.share) {
+                    await navigator.share({
+                        title: 'Paris & Rome Adventure - GlobeTrotter',
+                        text: 'Check out this amazing trip itinerary on GlobeTrotter!',
+                        url: shareUrlInput.value,
+                    });
+                } else {
+                    await navigator.clipboard.writeText(shareUrlInput.value);
+                    showToast('Link copied to clipboard!');
+                }
+            } catch (err) {
+                // Fallback
+                shareUrlInput.select();
+                document.execCommand('copy');
+                showToast('Link copied to clipboard!');
+            }
+        });
+
+        // Social sharing
+        socialButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const platform = btn.getAttribute('data-social');
+                const url = encodeURIComponent(shareUrlInput.value);
+                const title = encodeURIComponent('Paris & Rome Adventure - GlobeTrotter');
+                const text = encodeURIComponent('Check out this amazing trip itinerary on GlobeTrotter!');
+                
+                let shareUrl = '';
+                
+                switch (platform) {
+                    case 'facebook':
+                        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+                        break;
+                    case 'twitter':
+                        shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${text}`;
+                        break;
+                    case 'pinterest':
+                        shareUrl = `https://pinterest.com/pin/create/button/?url=${url}&description=${text}`;
+                        break;
+                    case 'whatsapp':
+                        shareUrl = `https://wa.me/?text=${text}%20${url}`;
+                        break;
+                }
+                
+                if (shareUrl) {
+                    window.open(shareUrl, '_blank', 'width=600,height=400');
+                }
+            });
+        });
+
+        // Copy trip button
+        copyTripBtn.addEventListener('click', () => {
+            copyModal.classList.add('active');
+        });
+
+        // Cancel copy
+        cancelCopyBtn.addEventListener('click', () => {
+            copyModal.classList.remove('active');
+        });
+
+        // Confirm copy
+        confirmCopyBtn.addEventListener('click', () => {
+            // In a real app, this would make an API call to copy the trip
+            copyModal.classList.remove('active');
+            showToast('Trip copied to your account! You can now edit it.', 'success');
+        });
+
+        // Download PDF
+        downloadPdfBtn.addEventListener('click', () => {
+            showToast('PDF download started!', 'success');
+            // In a real app, this would generate and download a PDF
+        });
+
+        // Print itinerary
+        printBtn.addEventListener('click', () => {
+            window.print();
+        });
+
+        // View full itinerary
+        viewFullBtn.addEventListener('click', () => {
+            showToast('In a real app, this would show the full itinerary', 'info');
+        });
+
+        // Create account
+        createAccountBtn.addEventListener('click', () => {
+            window.location.href = 'signup.html';
+        });
+
+        // Explore more trips
+        exploreMoreBtn.addEventListener('click', () => {
+            window.location.href = 'explore.html';
+        });
+
+        // Close modal when clicking outside
+        copyModal.addEventListener('click', (e) => {
+            if (e.target === copyModal) {
+                copyModal.classList.remove('active');
+            }
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                copyModal.classList.remove('active');
+            }
+        });
+
+        // Show toast notification
+        function showToast(message, type = 'success') {
+            toastMessage.textContent = message;
+            toast.className = `toast ${type} show`;
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Close mobile menu on window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                headerNav.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            }
+        });
+
+        // Add hover effect to activity cards
+        document.querySelectorAll('.activity-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateX(5px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateX(0)';
+            });
+        });
+    </script>
+</body>
+</html>

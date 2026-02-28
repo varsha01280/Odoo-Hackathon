@@ -1,0 +1,1733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GlobeTrotter - Discover Activities</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4F46E5;
+            --primary-light: #818CF8;
+            --secondary: #10B981;
+            --accent: #F59E0B;
+            --danger: #EF4444;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --background: #F8FAFC;
+            --card: #FFFFFF;
+            --text: #1E293B;
+            --text-light: #64748B;
+            --border: #E2E8F0;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
+            --radius: 16px;
+            --radius-sm: 10px;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: var(--text);
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header-title h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+        }
+
+        .header-title p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .selected-count {
+            background-color: var(--primary);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #4338ca;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.2);
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background-color: #f1f5f9;
+            border-color: var(--primary-light);
+        }
+
+        /* Search Bar */
+        .search-container {
+            background-color: var(--card);
+            border-radius: var(--radius);
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .search-bar {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 18px 25px 18px 60px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            background-color: #f8fafc;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+            background-color: white;
+        }
+
+        .search-bar i {
+            position: absolute;
+            left: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-light);
+            font-size: 1.2rem;
+        }
+
+        /* Filter Section */
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .filter-group {
+            margin-bottom: 15px;
+        }
+
+        .filter-group h3 {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-group h3 i {
+            color: var(--primary);
+        }
+
+        .filter-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .filter-chip {
+            padding: 8px 16px;
+            background-color: #f1f5f9;
+            border: 2px solid transparent;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-light);
+        }
+
+        .filter-chip:hover {
+            background-color: var(--primary-light);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .filter-chip.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary-light);
+        }
+
+        /* Duration & Cost Sliders */
+        .range-slider {
+            margin-top: 15px;
+        }
+
+        .range-values {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .range-slider input {
+            width: 100%;
+            height: 6px;
+            border-radius: 5px;
+            background: var(--border);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .range-slider input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            border: 3px solid white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* Main Layout */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+        }
+
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Activities Grid */
+        .activities-section {
+            background-color: var(--card);
+            border-radius: var(--radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .section-header h2 {
+            font-size: 1.8rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-header h2 i {
+            color: var(--primary);
+        }
+
+        .results-count {
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .activity-card {
+            background-color: white;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .activity-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary-light);
+        }
+
+        .activity-card.selected {
+            border-color: var(--success);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .activity-image {
+            height: 180px;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .activity-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .activity-card:hover .activity-image img {
+            transform: scale(1.05);
+        }
+
+        .activity-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        .activity-badge.sightseeing {
+            color: var(--primary);
+        }
+
+        .activity-badge.food {
+            color: #EC4899;
+        }
+
+        .activity-badge.adventure {
+            color: var(--secondary);
+        }
+
+        .activity-badge.culture {
+            color: #F59E0B;
+        }
+
+        .activity-badge.nature {
+            color: #10B981;
+        }
+
+        .activity-badge.shopping {
+            color: #8B5CF6;
+        }
+
+        .activity-content {
+            padding: 20px;
+        }
+
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .activity-title h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            color: var(--text);
+            line-height: 1.3;
+        }
+
+        .activity-price {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.3rem;
+        }
+
+        .activity-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .meta-item i {
+            color: var(--primary-light);
+        }
+
+        .activity-desc {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .activity-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .activity-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .activity-btn.add {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .activity-btn.add:hover {
+            background-color: #0da271;
+            transform: translateY(-2px);
+        }
+
+        .activity-btn.remove {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .activity-btn.remove:hover {
+            background-color: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        .activity-btn.details {
+            background-color: #f1f5f9;
+            color: var(--text);
+        }
+
+        .activity-btn.details:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* Selected Activities Sidebar */
+        .selected-sidebar {
+            background-color: var(--card);
+            border-radius: var(--radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            height: fit-content;
+            position: sticky;
+            top: 30px;
+        }
+
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.5rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-header h2 i {
+            color: var(--success);
+        }
+
+        .clear-all {
+            background: none;
+            border: none;
+            color: var(--danger);
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .selected-list {
+            max-height: 600px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .selected-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .selected-list::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+
+        .selected-list::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 10px;
+        }
+
+        .selected-item {
+            display: flex;
+            gap: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #f8fafc;
+            border-radius: var(--radius-sm);
+            border-left: 4px solid var(--success);
+            transition: all 0.2s ease;
+        }
+
+        .selected-item:hover {
+            background-color: #f1f5f9;
+            transform: translateX(5px);
+        }
+
+        .selected-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .selected-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .selected-details {
+            flex: 1;
+        }
+
+        .selected-details h4 {
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+            color: var(--text);
+        }
+
+        .selected-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .selected-price {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .remove-selected {
+            background: none;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .remove-selected:hover {
+            background-color: rgba(239, 68, 68, 0.1);
+        }
+
+        .selected-summary {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid var(--border);
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: var(--text-light);
+        }
+
+        .summary-item.total {
+            font-weight: 700;
+            color: var(--text);
+            font-size: 1.1rem;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed var(--border);
+        }
+
+        .empty-selection {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-light);
+        }
+
+        .empty-selection i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: var(--border);
+        }
+
+        /* Quick View Modal */
+        .quick-view-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .quick-view-modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .quick-view-content {
+            background-color: var(--card);
+            border-radius: var(--radius);
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 30px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .modal-header h3 {
+            font-size: 1.6rem;
+            color: var(--text);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: var(--danger);
+        }
+
+        .modal-body {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .modal-body {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .modal-image {
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            height: 300px;
+        }
+
+        .modal-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-details h4 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--text);
+        }
+
+        .modal-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .modal-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 20px 0;
+        }
+
+        .modal-tag {
+            padding: 6px 12px;
+            background-color: #f1f5f9;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .modal-description {
+            line-height: 1.6;
+            color: var(--text-light);
+            margin-bottom: 25px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .modal-actions .activity-btn {
+            padding: 12px 20px;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--success);
+            color: white;
+            padding: 15px 25px;
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1001;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.error {
+            background-color: var(--danger);
+        }
+
+        .toast.info {
+            background-color: var(--primary);
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            color: var(--text-light);
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .loading i {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .header-actions {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .activities-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .activity-actions {
+                flex-direction: column;
+            }
+        }
+
+        /* Cost Indicators */
+        .cost-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .cost-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--border);
+        }
+
+        .cost-dot.active {
+            background-color: var(--primary);
+        }
+
+        .cost-low .cost-dot:nth-child(1) { background-color: var(--secondary); }
+        .cost-mid .cost-dot:nth-child(-n+2) { background-color: var(--warning); }
+        .cost-high .cost-dot:nth-child(-n+3) { background-color: var(--danger); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-title">
+                <h1>Discover Activities</h1>
+                <p>Browse and add experiences to enrich your trip</p>
+            </div>
+            <div class="header-actions">
+                <div class="selected-count">
+                    <i class="fas fa-check-circle"></i>
+                    <span id="selected-count">0 Selected</span>
+                </div>
+                <button class="btn btn-secondary" id="back-btn">
+                    <i class="fas fa-arrow-left"></i> Back to Trip
+                </button>
+            </div>
+        </div>
+
+        <!-- Search & Filters -->
+        <div class="search-container">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" id="search-input" placeholder="Search activities by name, description, or location...">
+            </div>
+            
+            <div class="filters-grid">
+                <!-- Category Filter -->
+                <div class="filter-group">
+                    <h3><i class="fas fa-tags"></i> Category</h3>
+                    <div class="filter-chips">
+                        <div class="filter-chip active" data-filter="category" data-value="all">All</div>
+                        <div class="filter-chip" data-filter="category" data-value="sightseeing">🏛️ Sightseeing</div>
+                        <div class="filter-chip" data-filter="category" data-value="food">🍽️ Food & Drink</div>
+                        <div class="filter-chip" data-filter="category" data-value="adventure">🏔️ Adventure</div>
+                        <div class="filter-chip" data-filter="category" data-value="culture">🎭 Culture</div>
+                        <div class="filter-chip" data-filter="category" data-value="nature">🌿 Nature</div>
+                        <div class="filter-chip" data-filter="category" data-value="shopping">🛍️ Shopping</div>
+                    </div>
+                </div>
+
+                <!-- Cost Filter -->
+                <div class="filter-group">
+                    <h3><i class="fas fa-wallet"></i> Cost</h3>
+                    <div class="filter-chips">
+                        <div class="filter-chip active" data-filter="cost" data-value="all">All Prices</div>
+                        <div class="filter-chip" data-filter="cost" data-value="low">₹ Low</div>
+                        <div class="filter-chip" data-filter="cost" data-value="mid">₹₹ Medium</div>
+                        <div class="filter-chip" data-filter="cost" data-value="high">₹₹₹ High</div>
+                    </div>
+                    <div class="range-slider">
+                        <input type="range" id="cost-range" min="0" max="500" value="500">
+                        <div class="range-values">
+                            <span>₹0</span>
+                            <span id="max-cost-value">₹5000+</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Duration Filter -->
+                <div class="filter-group">
+                    <h3><i class="fas fa-clock"></i> Duration</h3>
+                    <div class="filter-chips">
+                        <div class="filter-chip active" data-filter="duration" data-value="all">Any Duration</div>
+                        <div class="filter-chip" data-filter="duration" data-value="short">⏱️ Short (< 2h)</div>
+                        <div class="filter-chip" data-filter="duration" data-value="medium">⏳ Medium (2-4h)</div>
+                        <div class="filter-chip" data-filter="duration" data-value="long">⌛ Long (> 4h)</div>
+                    </div>
+                    <div class="range-slider">
+                        <input type="range" id="duration-range" min="0" max="12" value="12">
+                        <div class="range-values">
+                            <span>0h</span>
+                            <span id="max-duration-value">12h+</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Popularity Filter -->
+                <div class="filter-group">
+                    <h3><i class="fas fa-fire"></i> Popularity</h3>
+                    <div class="filter-chips">
+                        <div class="filter-chip active" data-filter="popularity" data-value="all">All</div>
+                        <div class="filter-chip" data-filter="popularity" data-value="trending">🔥 Trending</div>
+                        <div class="filter-chip" data-filter="popularity" data-value="hidden">💎 Hidden Gems</div>
+                        <div class="filter-chip" data-filter="popularity" data-value="family">👨‍👩‍👧‍👦 Family Friendly</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Activities Grid -->
+            <div class="activities-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-compass"></i> Available Activities</h2>
+                    <div class="results-count" id="results-count">Loading activities...</div>
+                </div>
+
+                <!-- Loading -->
+                <div class="loading" id="loading">
+                    <i class="fas fa-spinner"></i>
+                    <p>Loading activities...</p>
+                </div>
+
+                <!-- Activities Grid -->
+                <div class="activities-grid" id="activities-grid">
+                    <!-- Activities will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Selected Activities Sidebar -->
+            <div class="selected-sidebar">
+                <div class="sidebar-header">
+                    <h2><i class="fas fa-check-circle"></i> Selected Activities</h2>
+                    <button class="clear-all" id="clear-all">
+                        <i class="fas fa-trash"></i> Clear All
+                    </button>
+                </div>
+
+                <div class="selected-list" id="selected-list">
+                    <!-- Selected activities will appear here -->
+                </div>
+
+                <div class="selected-summary" id="selected-summary">
+                    <!-- Summary will appear here when items are selected -->
+                </div>
+
+                <!-- Empty State -->
+                <div class="empty-selection" id="empty-selection">
+                    <i class="fas fa-calendar-plus"></i>
+                    <h3>No activities selected</h3>
+                    <p>Browse activities and click "Add to Trip" to add them here</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick View Modal -->
+        <div class="quick-view-modal" id="quick-view-modal">
+            <div class="quick-view-content">
+                <div class="modal-header">
+                    <h3 id="modal-title">Activity Details</h3>
+                    <button class="close-modal" id="close-modal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <!-- Modal content will be dynamically loaded -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notification -->
+        <div class="toast" id="toast">
+            <i class="fas fa-check-circle"></i>
+            <span id="toast-message">Activity added to trip!</span>
+        </div>
+    </div>
+
+    <script>
+        // Activity Database
+        const activities = [
+            {
+                id: 1,
+                name: "Eiffel Tower Visit",
+                description: "Skip-the-line access to the iconic Eiffel Tower with guided tour to the summit. Enjoy breathtaking views of Paris from 276 meters high.",
+                category: "sightseeing",
+                duration: 3,
+                cost: 45,
+                location: "Paris, France",
+                rating: 4.8,
+                popularity: "trending",
+                familyFriendly: true,
+                image: "https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                tags: ["Landmark", "City View", "Historical"]
+            },
+            {
+                id: 2,
+                name: "Italian Cooking Class",
+                description: "Learn to make authentic pasta and tiramisu from a local chef in a traditional Roman kitchen. Includes market tour and wine tasting.",
+                category: "food",
+                duration: 4,
+                cost: 85,
+                location: "Rome, Italy",
+                rating: 4.9,
+                popularity: "trending",
+                familyFriendly: true,
+                image: "https://images.unsplash.com/photo-1594041680534-e8c8cdebd659?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                tags: ["Cooking", "Wine", "Local Experience"]
+            },
+            {
+                id: 3,
+                name: "Swiss Alps Hiking",
+                description: "Full-day guided hike through the breathtaking Swiss Alps. Includes lunch with panoramic mountain views and photography stops.",
+                category: "adventure",
+                duration: 8,
+                cost: 120,
+                location: "Interlaken, Switzerland",
+                rating: 4.7,
+                popularity: "hidden",
+                familyFriendly: false,
+                image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                tags: ["Hiking", "Nature", "Photography"]
+            },
+            {
+                id: 4,
+                name: "Kyoto Temple Tour",
+                description: "Guided tour of Kyoto's most famous temples including Kinkaku-ji and Fushimi Inari Shrine. Learn about Japanese Buddhist culture.",
+                category: "culture",
+                duration: 5,
+                cost: 65,
+                location: "Kyoto, Japan",
+                rating: 4.6,
+                popularity: "trending",
+                familyFriendly: true,
+                image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                tags: ["Temples", "Cultural", "Historical"]
+            },
+            {
+                id: 5,
+                name: "Santorini Sunset Cruise",
+                description: "Romantic sunset cruise around Santorini caldera. Includes dinner, drinks, and swimming stops at volcanic hot springs.",
+                category: "sightseeing",
+                duration: 4,
+                cost: 95,
+                location: "Santorini, Greece",
+                rating: 4.9,
+                popularity: "trending",
+                familyFriendly: true,
+                image: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                tags: ["Boat Tour", "Sunset", "Romantic"]
+            },
+            {
+                id: 6,
+                name: "Street Food Tour Bangkok",
+                description: "Evening food tour through Bangkok's bustling Chinatown. Sample 10+ local dishes with a food expert guide.",
+                category: "food",
+                duration: 3,
+                cost: 35,
+                location: "Bangkok, Thailand",
+                rating: 4.8,
+                popularity: "trending",
+                familyFriendly: false,
+                image: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                tags: ["Street Food", "Local", "Night Tour"]
+            },
+            {
+                id: 7,
+                name: "Dubai Desert Safari",
+                description: "Thrilling desert safari with dune bashing, camel riding, and traditional Bedouin camp experience with BBQ dinner and shows.",
+                category: "adventure",
+                duration: 6,
+                cost: 75,
+                location: "Dubai, UAE",
+                rating: 4.5,
+                popularity: "family",
+                familyFriendly: true,
+                image: "https://images.unsplash.com/photo-1518684079-3c830dcef090?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                tags: ["Desert", "Adventure", "Cultural"]
+            },
+            {
+                id: 8,
+                name: "New York Broadway Show",
+                description: "Premium tickets to a Broadway musical with backstage tour. Includes dinner at a Times Square restaurant.",
+                category: "culture",
+                duration: 5,
+                cost: 180,
+                location: "New York, USA",
+                rating: 4.7,
+                popularity: "trending",
+                familyFriendly: true,
+                image: "https://images.unsplash.com/photo-1541532713592-79a0317b6b77?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                tags: ["Theater", "Entertainment", "Premium"]
+            },
+            {
+                id: 9,
+                name: "Amsterdam Canal Cruise",
+                description: "Relaxing 1-hour canal cruise through Amsterdam's historic waterways with audio guide in multiple languages.",
+                category: "sightseeing",
+                duration: 1,
+                cost: 25,
+                location: "Amsterdam, Netherlands",
+                rating: 4.4,
+                popularity: "family",
+                familyFriendly: true,
+                image: "https://images.unsplash.com/photo-1534351590666-13e3e96b5017?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                tags: ["Boat Tour", "City Tour", "Relaxing"]
+            },
+            {
+                id: 10,
+                name: "Bali Waterfall Trekking",
+                description: "Half-day trek to hidden waterfalls in Ubud jungle. Includes swimming, traditional lunch, and photography guidance.",
+                category: "nature",
+                duration: 4,
+                cost: 40,
+                location: "Bali, Indonesia",
+                rating: 4.9,
+                popularity: "hidden",
+                familyFriendly: false,
+                image: "https://images.unsplash.com/photo-1551632811-561732d1e306?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                tags: ["Waterfall", "Hiking", "Nature"]
+            },
+            {
+                id: 11,
+                name: "Souvenir Shopping Tour",
+                description: "Guided shopping tour to local markets and artisan workshops. Learn bargaining tips and find authentic souvenirs.",
+                category: "shopping",
+                duration: 3,
+                cost: 30,
+                location: "Marrakech, Morocco",
+                rating: 4.3,
+                popularity: "family",
+                familyFriendly: true,
+                image: "https://images.unsplash.com/photo-1544552866-d3ed42536d89?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                tags: ["Shopping", "Local Markets", "Cultural"]
+            },
+            {
+                id: 12,
+                name: "Wine Tasting in Tuscany",
+                description: "Visit to a family-run winery in Chianti region. Taste 5 premium wines with cheese pairing and vineyard tour.",
+                category: "food",
+                duration: 3,
+                cost: 65,
+                location: "Tuscany, Italy",
+                rating: 4.8,
+                popularity: "trending",
+                familyFriendly: false,
+                image: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                tags: ["Wine", "Vineyard", "Gourmet"]
+            }
+        ];
+
+        // DOM Elements
+        const searchInput = document.getElementById('search-input');
+        const activitiesGrid = document.getElementById('activities-grid');
+        const selectedList = document.getElementById('selected-list');
+        const selectedCount = document.getElementById('selected-count');
+        const resultsCount = document.getElementById('results-count');
+        const loading = document.getElementById('loading');
+        const emptySelection = document.getElementById('empty-selection');
+        const selectedSummary = document.getElementById('selected-summary');
+        const clearAllBtn = document.getElementById('clear-all');
+        const backBtn = document.getElementById('back-btn');
+        const quickViewModal = document.getElementById('quick-view-modal');
+        const closeModalBtn = document.getElementById('close-modal');
+        const modalBody = document.getElementById('modal-body');
+        const modalTitle = document.getElementById('modal-title');
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toast-message');
+
+        // Filter elements
+        const filterChips = document.querySelectorAll('.filter-chip');
+        const costRange = document.getElementById('cost-range');
+        const maxCostValue = document.getElementById('max-cost-value');
+        const durationRange = document.getElementById('duration-range');
+        const maxDurationValue = document.getElementById('max-duration-value');
+
+        // State variables
+        let selectedActivities = JSON.parse(localStorage.getItem('selectedActivities')) || [];
+        let currentFilters = {
+            category: 'all',
+            cost: 'all',
+            duration: 'all',
+            popularity: 'all',
+            maxCost: 500,
+            maxDuration: 12,
+            search: ''
+        };
+
+        // Initialize
+        function init() {
+            renderActivities();
+            updateSelectedList();
+            
+            // Event listeners for filters
+            filterChips.forEach(chip => {
+                chip.addEventListener('click', function() {
+                    const filterType = this.getAttribute('data-filter');
+                    const filterValue = this.getAttribute('data-value');
+                    
+                    // Remove active class from all chips of this filter type
+                    document.querySelectorAll(`[data-filter="${filterType}"]`).forEach(c => {
+                        c.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked chip
+                    this.classList.add('active');
+                    
+                    // Update filters
+                    currentFilters[filterType] = filterValue;
+                    renderActivities();
+                });
+            });
+            
+            // Cost range slider
+            costRange.addEventListener('input', function() {
+                currentFilters.maxCost = parseInt(this.value);
+                maxCostValue.textContent = `$${this.value}+`;
+                renderActivities();
+            });
+            
+            // Duration range slider
+            durationRange.addEventListener('input', function() {
+                currentFilters.maxDuration = parseInt(this.value);
+                maxDurationValue.textContent = `${this.value}h+`;
+                renderActivities();
+            });
+            
+            // Search input
+            searchInput.addEventListener('input', function() {
+                currentFilters.search = this.value.toLowerCase();
+                renderActivities();
+            });
+            
+            // Clear all selected
+            clearAllBtn.addEventListener('click', clearAllSelected);
+            
+            // Back button
+            backBtn.addEventListener('click', function() {
+                alert('In a real app, this would return to the trip itinerary');
+            });
+            
+            // Close modal
+            closeModalBtn.addEventListener('click', closeQuickView);
+            quickViewModal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeQuickView();
+                }
+            });
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeQuickView();
+                }
+            });
+        }
+
+        // Filter activities based on current filters
+        function filterActivities() {
+            return activities.filter(activity => {
+                // Search filter
+                if (currentFilters.search) {
+                    const searchTerm = currentFilters.search;
+                    if (!activity.name.toLowerCase().includes(searchTerm) &&
+                        !activity.description.toLowerCase().includes(searchTerm) &&
+                        !activity.location.toLowerCase().includes(searchTerm) &&
+                        !activity.tags.some(tag => tag.toLowerCase().includes(searchTerm))) {
+                        return false;
+                    }
+                }
+                
+                // Category filter
+                if (currentFilters.category !== 'all' && activity.category !== currentFilters.category) {
+                    return false;
+                }
+                
+                // Cost filter
+                if (currentFilters.cost !== 'all') {
+                    let costLevel;
+                    if (activity.cost < 30) costLevel = 'low';
+                    else if (activity.cost < 80) costLevel = 'mid';
+                    else costLevel = 'high';
+                    
+                    if (costLevel !== currentFilters.cost) return false;
+                }
+                
+                // Max cost filter
+                if (activity.cost > currentFilters.maxCost) {
+                    return false;
+                }
+                
+                // Duration filter
+                if (currentFilters.duration !== 'all') {
+                    let durationLevel;
+                    if (activity.duration < 2) durationLevel = 'short';
+                    else if (activity.duration <= 4) durationLevel = 'medium';
+                    else durationLevel = 'long';
+                    
+                    if (durationLevel !== currentFilters.duration) return false;
+                }
+                
+                // Max duration filter
+                if (activity.duration > currentFilters.maxDuration) {
+                    return false;
+                }
+                
+                // Popularity filter
+                if (currentFilters.popularity !== 'all') {
+                    if (activity.popularity !== currentFilters.popularity) {
+                        return false;
+                    }
+                }
+                
+                return true;
+            });
+        }
+
+        // Render activities grid
+        function renderActivities() {
+            const filteredActivities = filterActivities();
+            
+            // Show loading
+            loading.classList.add('active');
+            
+            // Simulate loading delay
+            setTimeout(() => {
+                loading.classList.remove('active');
+                
+                // Update results count
+                resultsCount.textContent = `${filteredActivities.length} activities found`;
+                
+                // Clear grid
+                activitiesGrid.innerHTML = '';
+                
+                // Render activities
+                filteredActivities.forEach(activity => {
+                    const isSelected = selectedActivities.some(a => a.id === activity.id);
+                    
+                    const activityCard = document.createElement('div');
+                    activityCard.className = `activity-card ${isSelected ? 'selected' : ''}`;
+                    activityCard.innerHTML = `
+                        <div class="activity-image">
+                            <img src="${activity.image}" alt="${activity.name}">
+                            <span class="activity-badge ${activity.category}">${getCategoryIcon(activity.category)} ${activity.category.charAt(0).toUpperCase() + activity.category.slice(1)}</span>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-header">
+                                <div class="activity-title">
+                                    <h3>${activity.name}</h3>
+                                    <div class="cost-indicator ${getCostClass(activity.cost)}">
+                                        <span class="cost-dot"></span>
+                                        <span class="cost-dot"></span>
+                                        <span class="cost-dot"></span>
+                                    </div>
+                                </div>
+                                <div class="activity-price">$${activity.cost}</div>
+                            </div>
+                            <div class="activity-meta">
+                                <div class="meta-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span>${activity.duration}h</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>${activity.location}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-star"></i>
+                                    <span>${activity.rating}</span>
+                                </div>
+                            </div>
+                            <p class="activity-desc">${activity.description}</p>
+                            <div class="activity-actions">
+                                <button class="activity-btn details" data-id="${activity.id}">
+                                    <i class="fas fa-eye"></i> Quick View
+                                </button>
+                                ${isSelected ? 
+                                    `<button class="activity-btn remove" data-id="${activity.id}">
+                                        <i class="fas fa-minus"></i> Remove
+                                    </button>` :
+                                    `<button class="activity-btn add" data-id="${activity.id}">
+                                        <i class="fas fa-plus"></i> Add to Trip
+                                    </button>`
+                                }
+                            </div>
+                        </div>
+                    `;
+                    
+                    activitiesGrid.appendChild(activityCard);
+                });
+                
+                // Attach event listeners
+                attachActivityEventListeners();
+                
+            }, 300); // Simulated loading delay
+        }
+
+        // Get category icon
+        function getCategoryIcon(category) {
+            const icons = {
+                sightseeing: '🏛️',
+                food: '🍽️',
+                adventure: '🏔️',
+                culture: '🎭',
+                nature: '🌿',
+                shopping: '🛍️'
+            };
+            return icons[category] || '📍';
+        }
+
+        // Get cost class for indicator
+        function getCostClass(cost) {
+            if (cost < 30) return 'cost-low';
+            if (cost < 80) return 'cost-mid';
+            return 'cost-high';
+        }
+
+        // Attach event listeners to activity cards
+        function attachActivityEventListeners() {
+            // Add to trip buttons
+            document.querySelectorAll('.activity-btn.add').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const activityId = parseInt(this.getAttribute('data-id'));
+                    addToSelected(activityId);
+                });
+            });
+            
+            // Remove from trip buttons
+            document.querySelectorAll('.activity-btn.remove').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const activityId = parseInt(this.getAttribute('data-id'));
+                    removeFromSelected(activityId);
+                });
+            });
+            
+            // Quick view buttons
+            document.querySelectorAll('.activity-btn.details').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const activityId = parseInt(this.getAttribute('data-id'));
+                    showQuickView(activityId);
+                });
+            });
+        }
+
+        // Add activity to selected list
+        function addToSelected(activityId) {
+            const activity = activities.find(a => a.id === activityId);
+            if (activity && !selectedActivities.some(a => a.id === activityId)) {
+                selectedActivities.push(activity);
+                saveSelectedActivities();
+                updateSelectedList();
+                renderActivities();
+                showToast(`${activity.name} added to your trip!`);
+            }
+        }
+
+        // Remove activity from selected list
+        function removeFromSelected(activityId) {
+            const index = selectedActivities.findIndex(a => a.id === activityId);
+            if (index !== -1) {
+                const activityName = selectedActivities[index].name;
+                selectedActivities.splice(index, 1);
+                saveSelectedActivities();
+                updateSelectedList();
+                renderActivities();
+                showToast(`${activityName} removed from your trip`, 'error');
+            }
+        }
+
+        // Clear all selected activities
+        function clearAllSelected() {
+            if (selectedActivities.length > 0) {
+                if (confirm('Are you sure you want to remove all selected activities?')) {
+                    selectedActivities = [];
+                    saveSelectedActivities();
+                    updateSelectedList();
+                    renderActivities();
+                    showToast('All activities removed', 'error');
+                }
+            }
+        }
+
+        // Update selected list sidebar
+        function updateSelectedList() {
+            // Update count
+            selectedCount.textContent = `${selectedActivities.length} Selected`;
+            
+            // Clear list
+            selectedList.innerHTML = '';
+            emptySelection.style.display = 'block';
+            selectedSummary.style.display = 'none';
+            
+            if (selectedActivities.length > 0) {
+                emptySelection.style.display = 'none';
+                selectedSummary.style.display = 'block';
+                
+                // Render selected items
+                selectedActivities.forEach(activity => {
+                    const selectedItem = document.createElement('div');
+                    selectedItem.className = 'selected-item';
+                    selectedItem.innerHTML = `
+                        <div class="selected-image">
+                            <img src="${activity.image}" alt="${activity.name}">
+                        </div>
+                        <div class="selected-details">
+                            <h4>${activity.name}</h4>
+                            <div class="selected-meta">
+                                <div class="selected-price">$${activity.cost}</div>
+                                <button class="remove-selected" data-id="${activity.id}">
+                                    <i class="fas fa-times"></i> Remove
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    selectedList.appendChild(selectedItem);
+                });
+                
+                // Attach remove listeners
+                document.querySelectorAll('.remove-selected').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const activityId = parseInt(this.getAttribute('data-id'));
+                        removeFromSelected(activityId);
+                    });
+                });
+                
+                // Update summary
+                updateSummary();
+            }
+        }
+
+        // Update summary
+        function updateSummary() {
+            const totalCost = selectedActivities.reduce((sum, activity) => sum + activity.cost, 0);
+            const totalDuration = selectedActivities.reduce((sum, activity) => sum + activity.duration, 0);
+            
+            selectedSummary.innerHTML = `
+                <div class="summary-item">
+                    <span>Activities:</span>
+                    <span>${selectedActivities.length}</span>
+                </div>
+                <div class="summary-item">
+                    <span>Total Duration:</span>
+                    <span>${totalDuration}h</span>
+                </div>
+                <div class="summary-item">
+                    <span>Average per Activity:</span>
+                    <span>$${Math.round(totalCost / selectedActivities.length)}</span>
+                </div>
+                <div class="summary-item total">
+                    <span>Total Cost:</span>
+                    <span>$${totalCost}</span>
+                </div>
+                <button class="btn btn-primary" style="width: 100%; margin-top: 20px;">
+                    <i class="fas fa-save"></i> Save to Itinerary
+                </button>
+            `;
+        }
+
+        // Show quick view modal
+        function showQuickView(activityId) {
+            const activity = activities.find(a => a.id === activityId);
+            if (!activity) return;
+            
+            const isSelected = selectedActivities.some(a => a.id === activityId);
+            
+            modalTitle.textContent = activity.name;
+            modalBody.innerHTML = `
+                <div class="modal-image">
+                    <img src="${activity.image}" alt="${activity.name}">
+                </div>
+                <div class="modal-details">
+                    <h4>${activity.name}</h4>
+                    <div class="modal-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>${activity.location}</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-clock"></i>
+                            <span>${activity.duration} hours</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-star"></i>
+                            <span>${activity.rating} / 5</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-users"></i>
+                            <span>${activity.familyFriendly ? 'Family Friendly' : 'Adults Only'}</span>
+                        </div>
+                    </div>
+                    <div class="modal-tags">
+                        ${activity.tags.map(tag => `<span class="modal-tag">${tag}</span>`).join('')}
+                    </div>
+                    <div class="modal-description">
+                        ${activity.description}
+                    </div>
+                    <div class="activity-price" style="font-size: 2rem; margin: 20px 0;">$${activity.cost}</div>
+                    <div class="modal-actions">
+                        <button class="activity-btn details" id="modal-close-btn">
+                            <i class="fas fa-times"></i> Close
+                        </button>
+                        ${isSelected ? 
+                            `<button class="activity-btn remove" id="modal-remove-btn" data-id="${activity.id}">
+                                <i class="fas fa-minus"></i> Remove from Trip
+                            </button>` :
+                            `<button class="activity-btn add" id="modal-add-btn" data-id="${activity.id}">
+                                <i class="fas fa-plus"></i> Add to Trip
+                            </button>`
+                        }
+                    </div>
+                </div>
+            `;
+            
+            quickViewModal.classList.add('active');
+            
+            // Attach modal button listeners
+            document.getElementById('modal-close-btn').addEventListener('click', closeQuickView);
+            
+            if (isSelected) {
+                document.getElementById('modal-remove-btn').addEventListener('click', function() {
+                    removeFromSelected(activityId);
+                    closeQuickView();
+                });
+            } else {
+                document.getElementById('modal-add-btn').addEventListener('click', function() {
+                    addToSelected(activityId);
+                    closeQuickView();
+                });
+            }
+        }
+
+        // Close quick view modal
+        function closeQuickView() {
+            quickViewModal.classList.remove('active');
+        }
+
+        // Show toast notification
+        function showToast(message, type = 'success') {
+            toastMessage.textContent = message;
+            toast.className = `toast ${type} show`;
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Save selected activities to localStorage
+        function saveSelectedActivities() {
+            localStorage.setItem('selectedActivities', JSON.stringify(selectedActivities));
+        }
+
+        // Start the app
+        init();
+    </script>
+</body>
+</html>
